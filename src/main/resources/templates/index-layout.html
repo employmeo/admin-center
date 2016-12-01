@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Talytica Admin</title>
+<th:block th:include="fragments/nav1 :: head"></th:block>
+</head>
+<body class="nav-md" id='mainbody'>
+  <div id='wait' class="text-center" style='position:absolute;width:100%;position: absolute;background: black;opacity: .75;padding: 35%;height: 100%;z-index: 99;'>
+    <i class="fa fa-spinner fa-5x fa-spin"></i>
+  </div>
+
+  <div id='portal' class="container body">
+    <div class="main_container">
+      <div class="col-md-3 left_col" id="leftnav">
+      	<th:block th:include="fragments/nav1 :: leftnav"></th:block>
+      </div>
+      <div class="top_nav" id="topnav">
+      	<th:block th:include="fragments/nav1 :: topnav"></th:block>
+      </div>
+      <!-- /top navigation -->
+       <div class="right_col" role="main" id="mainpanel" layout:fragment="content">
+       </div>  
+     </div>
+  </div>	
+	
+</body>
+
+<script>
+$(".right_col").css("min-height", $(window).height());
+$(window).resize(function () {
+    $(".right_col").css("min-height", $(window).height());
+});
+var portal = new adminPortal();
+</script>
+
+</html>
