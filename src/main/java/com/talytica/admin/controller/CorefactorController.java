@@ -42,7 +42,7 @@ public class CorefactorController {
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(Corefactor corefactor, Model model) {
     	Corefactor saved = corefactorService.save(corefactor);
-        return "redirect:/admin/corefactor/" + saved.getId();
+        return "redirect:/admin/" + model + "/" + saved.getId();
     }
 
     @RequestMapping(value = "edit/{id}")
