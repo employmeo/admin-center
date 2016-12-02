@@ -49,7 +49,8 @@ function postLogout() {
 			withCredentials: true
 		},
 		success: function(data) {
-			window.location.reload();
+			//window.location.reload();
+			window.location.assign('/');
 		}
 	});	
 }

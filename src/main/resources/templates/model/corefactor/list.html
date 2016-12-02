@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-md-9">
+				<h3 th:text="${modelDisplay + ' List'}">List</h3>
+			</div>
+			<div class="col-md-3 col-sm-3 col-xs-12 pull-right">
+			    <a class="right_col" th:href="${'/' + model + '/create'}">Create</a>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-3 col-md-3">
+				<div th:if="${not #lists.isEmpty(items)}">
+					<table class="table table-striped">
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Source</th>
+							<th>Foreign Id</th>
+							<th>Display Group</th>
+							<th>Low Value</th>
+							<th>High Value</th>
+							<th>Low Description</th>
+							<th>High Description</th>
+							<th>Mean Score</th>
+							<th>Measurements</th>
+							<th>Score Deviation</th>
+							<th>View</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+						<tr th:each="item : ${items}">
+							<td th:text="${item.id}"><a th:href="${'/' + model + '/' + item.id}">Id</a></td>
+							<td th:text="${item.name}">Name</td>
+							<td th:text="${item.description}">Description</td>
+							<td th:text="${item.source}">Source</td>
+							<td th:text="${item.foreignId}">Foreign Id</td>
+							<td th:text="${item.displayGroup}">Display Group</td>
+							<td th:text="${item.lowValue}">Low Value</td>
+							<td th:text="${item.highValue}">High Value</td>
+							<td th:text="${item.lowDescription}">Low Description</td>
+							<td th:text="${item.highDescription}">High Description</td>
+							<td th:text="${item.meanScore}">Mean Score</td>
+							<td th:text="${item.measurements}">Measurements</td>
+							<td th:text="${item.scoreDeviation}">Score Deviation</td>
+							
+							<td><a th:href="${'/' + model + '/' + item.id}">View</a></td>
+							<td><a th:href="${'/' + model + '/edit/' + item.id}">Edit</a></td>
+							<td><a th:href="${'/' + model + '/delete/' + item.id}">Delete</a></td>
+						</tr>
+					</table>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -9,8 +9,6 @@ public class IndexController {
 
     @RequestMapping("/admin/index")
     public String  index(Model model){
-        // return withView(model, "segment/list");
-
-    	return "fragments/segment/list";
+    	return "segment/list";
     }
 }
