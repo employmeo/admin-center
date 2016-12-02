@@ -9,6 +9,6 @@ public class IndexController {
 
     @RequestMapping("/admin/index")
     public String  index(Model model){
-    	return "segment/list";
+    	return "dashboard";
     }
 }

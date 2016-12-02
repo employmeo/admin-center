@@ -13,7 +13,7 @@
 				<h3 th:text="${modelDisplay + ' List'}">List</h3>
 			</div>
 			<div class="col-md-3 col-sm-3 col-xs-12 pull-right">
-			    <a class="right_col" th:href="${'/' + model + '/create'}">Create</a>
+			    <a class="right_col" th:href="${'/admin/' + model + '/create'}">Create</a>
 			</div>
 		</div>
 
@@ -39,7 +39,7 @@
 							<th>Score Deviation</th>
 							<th>View</th>
 							<th>Edit</th>
-							<th>Delete</th>
+							<!-- <th>Delete</th>  -->
 						</tr>
 						<tr th:each="item : ${items}">
 							<td th:text="${item.id}"><a th:href="${'/' + model + '/' + item.id}">Id</a></td>
@@ -56,9 +56,11 @@
 							<td th:text="${item.measurements}">Measurements</td>
 							<td th:text="${item.scoreDeviation}">Score Deviation</td>
 							
-							<td><a th:href="${'/' + model + '/' + item.id}">View</a></td>
-							<td><a th:href="${'/' + model + '/edit/' + item.id}">Edit</a></td>
-							<td><a th:href="${'/' + model + '/delete/' + item.id}">Delete</a></td>
+							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
+							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
+							<!-- 
+							<td><a thhref="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
+ 							-->							
 						</tr>
 					</table>
 
