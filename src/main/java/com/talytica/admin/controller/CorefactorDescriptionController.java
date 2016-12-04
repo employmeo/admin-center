@@ -5,19 +5,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.employmeo.data.model.Corefactor;
-import com.employmeo.data.service.CorefactorService;
+import com.employmeo.data.model.CorefactorDescription;
+import com.employmeo.data.service.CorefactorDescriptionService;
 
 @Controller
-@RequestMapping("/admin/corefactor")
-public class CorefactorController {
+@RequestMapping("/admin/corefactorDescription")
+public class CorefactorDescriptionController {
 
 	@Autowired
-	CorefactorService corefactorService;
+	CorefactorDescriptionService corefactorDescriptionService;
 
 	private static final String FRAGMENT_ROOT = "model/";
-	private static final String MODEL = "corefactor";
-	private static final String MODEL_DISPLAY = "Corefactor";
+	private static final String MODEL = "corefactorDescription";
+	private static final String MODEL_DISPLAY = "Corefactor Description";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
 	private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
@@ -27,7 +27,7 @@ public class CorefactorController {
     public String  list(Model model) {
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	model.addAttribute("items", corefactorService.getAllCorefactors());
+    	model.addAttribute("items", corefactorDescriptionService.getAll());
     	return LIST_VIEW;
     }
 
@@ -35,13 +35,13 @@ public class CorefactorController {
     public String create(Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	model.addAttribute("item", new Corefactor());
+    	model.addAttribute("item", new CorefactorDescription());
     	return EDIT_VIEW;
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(Corefactor corefactor, Model model) {
-    	Corefactor saved = corefactorService.save(corefactor);
+    public String save(CorefactorDescription corefactorDescription, Model model) {
+    	CorefactorDescription saved = corefactorDescriptionService.save(corefactorDescription);
         return "redirect:/admin/" + MODEL + "/" + saved.getId();
     }
 
@@ -49,7 +49,7 @@ public class CorefactorController {
     public String edit(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", corefactorService.findCorefactorById(id));
+        model.addAttribute("item", corefactorDescriptionService.getById(id));
         return EDIT_VIEW;
     }
 
@@ -57,13 +57,13 @@ public class CorefactorController {
     public String view(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", corefactorService.findCorefactorById(id));
+        model.addAttribute("item", corefactorDescriptionService.getById(id));
         return DISPLAY_VIEW;
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable Long id, Model model){
-    	corefactorService.delete(id);
+    	corefactorDescriptionService.delete(id);
         return "redirect:/admin/" + MODEL ;
     }
 }

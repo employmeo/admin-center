@@ -25,45 +25,23 @@
 					<table class="table table-striped">
 						<tr>
 							<th>Id</th>
-							<th>Name</th>
 							<th>Description</th>
-							<th>Source</th>
-							<th>Foreign Id</th>
-							<th>Display Group</th>
-							<th>Low Value</th>
-							<th>High Value</th>
-							<th>Low Description</th>
-							<th>High Description</th>
-							<th>Mean Score</th>
-							<th>Measurements</th>
-							<th>Score Deviation</th>
-							<th>Corefactor Descriptions</th>
+							<th>Low End</th>
+							<th>High End</th>
+							<th>Corefactor</th>
 							<th>View</th>
 							<th>Edit</th>
 							<th>Delete</th>
 						</tr>
 						<tr th:each="item : ${items}">
 							<td th:text="${item.id}"><a th:href="${'/' + model + '/' + item.id}">Id</a></td>
-							<td th:text="${item.name}">Name</td>
 							<td th:text="${item.description}">Description</td>
-							<td th:text="${item.source}">Source</td>
-							<td th:text="${item.foreignId}">Foreign Id</td>
-							<td th:text="${item.displayGroup}">Display Group</td>
-							<td th:text="${item.lowValue}">Low Value</td>
-							<td th:text="${item.highValue}">High Value</td>
-							<td th:text="${item.lowDescription}">Low Description</td>
-							<td th:text="${item.highDescription}">High Description</td>
-							<td th:text="${item.meanScore}">Mean Score</td>
-							<td th:text="${item.measurements}">Measurements</td>
-							<td th:text="${item.scoreDeviation}">Score Deviation</td>
+							<td th:text="${item.lowEnd}">Low End</td>
+							<td th:text="${item.highEnd}">High End</td>
 							<td>
-								<ul>
-									<th:block th:object="${item}">
-										<li th:each="cd : *{corefactorDescriptions}">
-											<a th:href="${'/admin/corefactorDescription/' + cd.id}" th:text="${cd.id}" th:attr="title=${cd.description}">Corefactor Description</a>
-										</li>
-									</th:block>
-								</ul>
+								<p th:if="${item.corefactor != null}">
+									<a th:href="${'/admin/corefactor/' + item.corefactor.id}" th:text="${item.corefactor.id}" th:attr="title=${item.corefactor.name}">Corefactor</a>
+								</p>
 							</td>
 							
 							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>

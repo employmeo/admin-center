@@ -112,10 +112,28 @@
 						<p class="form-control-static" th:text="${item.scoreDeviation}">Score Deviation</p>
 					</div>
 				</div>
-				
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Corefactor Descriptions:</label>
+					<div class="col-sm-10">
+						<p class="form-control-static">
+								<ul>
+									<th:block th:object="${item}">
+										<li th:each="cd : *{corefactorDescriptions}">
+											<a th:href="${'/admin/corefactorDescription/' + cd.id}" th:text="${cd.id + ':' + cd.description}">Corefactor Description</a>
+										</li>
+									</th:block>
+								</ul>						
+						</p>
+					</div>
+				</div>				
+			
 				<div class="form-group col-sm-6 col-lg-6 text-center">
 					<a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a>
-				</div>	
+				</div>
+				<div class="form-group col-sm-6 col-lg-6 text-center">
+					<a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a>
+				</div>				
+					
 			</form>
 
 		</div>
