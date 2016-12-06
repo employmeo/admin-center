@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.employmeo.data.model.Corefactor;
 import com.employmeo.data.model.CorefactorDescription;
 import com.employmeo.data.service.CorefactorDescriptionService;
+import com.employmeo.data.service.CorefactorService;
 
 @Controller
 @RequestMapping("/admin/corefactorDescription")
@@ -14,6 +16,9 @@ public class CorefactorDescriptionController {
 
 	@Autowired
 	CorefactorDescriptionService corefactorDescriptionService;
+	
+	@Autowired
+	CorefactorService corefactorService;
 
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "corefactorDescription";
@@ -65,5 +70,10 @@ public class CorefactorDescriptionController {
     public String delete(@PathVariable Long id, Model model){
     	corefactorDescriptionService.delete(id);
         return "redirect:/admin/" + MODEL ;
+    }
+    
+    @ModelAttribute("allCorefactors")
+    public Iterable<Corefactor> getCorefactors() {
+        return corefactorService.getAllCorefactors();
     }
 }

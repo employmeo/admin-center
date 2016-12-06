@@ -8,24 +8,19 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="row">
-			<div class="col-xs-6 col-sm-6 col-md-6">
-				<h3 th:text="${modelDisplay}"></h3>
+		<div class="x_panel">
+			<div class="x_title">
+				<div class="col-xs-6"><h3 th:text="${modelDisplay}"></h3></div>
+				<div class="col-xs-6">
+					<ul class="nav navbar-right panel_toolbox">
+	                    <li><a th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i></a></li>
+	                    <li><a th:href="${'/admin/' + model + '/edit/' + item.id}"><i class="fa fa-edit"></i></a></li>
+	                    <li><a th:href="${'/admin/' + model}" ><i class="fa fa-backward"></i></a></li>
+	                </ul>
+				</div>
+                <div class="clearfix"></div>
 			</div>
-			<div class="col-md-2 col-sm-2 col-xs-2">
-				<a th:href="${'/admin/' + model}">List</a>
-			</div>						
-			<div class="col-md-2 col-sm-2 col-xs-2">
-				<a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a>
-			</div>			
-			<div class="col-md-2 col-sm-2 col-xs-2 pull-right">
-				<a class="right_col" th:href="${'/admin/' + model + '/create'}">Create</a>
-			</div>
-		</div>
-
-		<div class="clearfix"></div>
-
-		<div class="row">
+			<div class="x_content">
 			<form class="form-horizontal">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Id:</label>
@@ -63,13 +58,13 @@
 				</div>				
 			
 				<div class="form-group col-sm-6 col-lg-6 text-center">
-					<a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a>
+					<a class="btn btn-default" th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a>
 				</div>
 				<div class="form-group col-sm-6 col-lg-6 text-center">
-					<a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a>
-				</div>				
-					
+					<a class="btn btn-default" th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a>
+				</div>
 			</form>
+		  </div>
 
 		</div>
 	</div>

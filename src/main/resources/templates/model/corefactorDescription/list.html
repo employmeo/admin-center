@@ -33,21 +33,15 @@
 							<td th:text="${item.lowEnd}">Low End</td>
 							<td th:text="${item.highEnd}">High End</td>
 							<td>
-								<p th:if="${item.corefactor != null}">
-									<a th:href="${'/admin/corefactor/' + item.corefactor.id}" th:text="${item.corefactor.id}" th:attr="title=${item.corefactor.name}">Corefactor</a>
-								</p>
+								<a th:href="${'/admin/corefactor/' + item.corefactor.id}" th:text="${item.corefactor.name}">Corefactor</a>
 							</td>
-							
 							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
-							
 						</tr>
 						</tbody>
 					</table>
-
 				</div>
-
 			</div>
 		</div>
 		<script>

@@ -39,18 +39,31 @@
 							<td th:text="${item.type}">Type</td>
 							<td th:text="${item.corefactorName}">Corefactor</td>
 							<td th:text="${item.questionText}">Text</td>
-							<td><a th:href="${item.questionMedia} ? ${item.questionMedia} : '#'" target="blank">Link</a></td>
+							<td>
+							  <th:block th:if="${item.questionMedia}">
+							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.jpg')}" th:src="${item.questionMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.jpeg')}" th:src="${item.questionMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.gif')}" th:src="${item.questionMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.png')}" th:src="${item.questionMedia}" class="img-thumbnail" />
+							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.mp3')}" th:src="${item.questionMedia}" controls="controls"></audio>
+							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.aifc')}" th:src="${item.questionMedia}" controls="controls"></audio>
+							  </th:block>
+							
+							</td>
 							<td th:text="${item.description}">Description</td>
 							<td th:text="${item.foreignSource}">Foreign Source</td>
 							<td th:text="${item.foreignId}">Foreign Id</td>
 							<td th:text="${item.direction}">Direction</td>
 							<td>
-								<ul>
+								<ul class="list-group" style="margin-bottom:0px;">
 									<th:block th:object="${item}">
-										<li th:each="ans : *{answers}">
-											<a th:href="${'/admin/answers/' + ans.id}" th:text="${ans.answerValue + ' : ' +ans.answerText}">Answer</a>
+										<li class="list-group-item" style="padding:2px;" th:each="ans : *{answers}">
+											<a th:href="${'/admin/answer/' + ans.id}" th:text="${ans.answerValue + ' : ' +ans.answerText}">Answer</a>
 										</li>
 									</th:block>
+									<li class="list-group-item text-center" style="padding:2px;">
+										<a th:href="${'/admin/answer/'+item.questionId+'/create'}">Create</a>
+									</li>
 								</ul>
 							</td>
 							<td th:text="${item.displayId}">Display Id</td>
