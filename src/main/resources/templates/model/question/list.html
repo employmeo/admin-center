@@ -18,45 +18,46 @@
 					  <thead>
 						<tr>
 							<th>Id</th>
-							<th>Name</th>
+							<th>Type</th>
+							<th>Corefactor</th>
+							<th>Text</th>
+							<th>Media</th>
 							<th>Description</th>
-							<th>Source</th>
+							<th>Foreign Source</th>
 							<th>Foreign Id</th>
-							<th>Display Group</th>
-							<th>Low Value</th>
-							<th>High Value</th>
-							<th>Low Description</th>
-							<th>High Description</th>
-							<th>Corefactor Descriptions</th>
+							<th>Direction</th>
+							<th>Answers</th>
+							<th>Display Id</th>
 							<th>View</th>
 							<th>Edit</th>
 							<th>Delete</th>
 						</tr>
-						</thead><tbody>
+						</thead>
+						<tbody>
 						<tr th:each="item : ${items}">
-							<td th:text="${item.id}"><a th:href="${'/' + model + '/' + item.id}">Id</a></td>
-							<td th:text="${item.name}">Name</td>
+							<td th:text="${item.questionId}"><a th:href="${'/' + model + '/' + item.questionId}">Id</a></td>
+							<td th:text="${item.type}">Type</td>
+							<td th:text="${item.corefactorName}">Corefactor</td>
+							<td th:text="${item.questionText}">Text</td>
+							<td><a th:href="${item.questionMedia} ? ${item.questionMedia} : '#'" target="blank">Link</a></td>
 							<td th:text="${item.description}">Description</td>
-							<td th:text="${item.source}">Source</td>
+							<td th:text="${item.foreignSource}">Foreign Source</td>
 							<td th:text="${item.foreignId}">Foreign Id</td>
-							<td th:text="${item.displayGroup}">Display Group</td>
-							<td th:text="${item.lowValue}">Low Value</td>
-							<td th:text="${item.highValue}">High Value</td>
-							<td th:text="${item.lowDescription}">Low Description</td>
-							<td th:text="${item.highDescription}">High Description</td>
+							<td th:text="${item.direction}">Direction</td>
 							<td>
 								<ul>
 									<th:block th:object="${item}">
-										<li th:each="cd : *{corefactorDescriptions}">
-											<a th:href="${'/admin/corefactorDescription/' + cd.id}" th:text="${cd.lowEnd + 'to' + cd.highEnd}" th:attr="title=${cd.description}">Corefactor Description</a>
+										<li th:each="ans : *{answers}">
+											<a th:href="${'/admin/answers/' + ans.id}" th:text="${ans.answerValue + ' : ' +ans.answerText}">Answer</a>
 										</li>
 									</th:block>
 								</ul>
 							</td>
+							<td th:text="${item.displayId}">Display Id</td>
 							
-							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
-							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
-							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
+							<td><a th:href="${'/admin/' + model + '/' + item.questionId}">View</a></td>
+							<td><a th:href="${'/admin/' + model + '/edit/' + item.questionId}">Edit</a></td>
+							<td><a th:href="${'/admin/' + model + '/delete/' + item.questionId}">Delete</a></td>
 							
 						</tr>
 						</tbody>
