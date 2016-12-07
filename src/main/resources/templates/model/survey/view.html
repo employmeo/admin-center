@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay} "></title>
+</head>
+<body>
+	<div layout:fragment="content">
+	<div class='col-xs-12'>
+		<div class="x_panel">
+			<div class="x_title">
+				<div class="col-xs-6"><h3 th:text="${modelDisplay}"></h3></div>
+				<div class="col-xs-6">
+					<ul class="nav navbar-right panel_toolbox">
+	                    <li><a th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i></a></li>
+	                    <li><a th:href="${'/admin/' + model + '/edit/' + item.id}"><i class="fa fa-edit"></i></a></li>
+	                    <li><a th:href="${'/admin/' + model}" ><i class="fa fa-backward"></i></a></li>
+	                </ul>
+				</div>
+                <div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+			<form class="form-horizontal">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${item.id}"></td>
+						<td th:text="${item.name}">Name</td>
+						<td th:text="${item.surveyStatus}">Status</td>
+						<td th:text="${item.surveyStatus}">Type</td>
+					</tr>
+				</tbody>
+			</table>
+				<div class="form-group">
+					<p class="form-control-static" th:utext="${item.description}">Text</p><hr/>
+				</div>
+				<div class="form-group col-sm-6 col-lg-6 text-center">
+					<a class="btn btn-default" th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a>
+				</div>
+				<div class="form-group col-sm-6 col-lg-6 text-center">
+					<a class="btn btn-default" th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a>
+				</div>
+			</form>
+		  </div>
+		</div></div>
+		<div class='col-xs-5'><div class="x_panel"><div class="x_title"><h3>Sections</h3></div><div class="x_content">
+
+		<table id='sectiontable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th>#</th>
+							<th>Qs /Page</th>
+							<th>Timed</th>
+							<th>Required</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="item : ${item.surveySections}">
+							<td><a th:title="${item.instructions}" th:text="${item.id.sectionNumber}" th:href="${'/admin/question/' + item.id}">Id</a></td>
+							<td th:text="${item.questionsPerPage}">Qs /Page</td>
+							<td th:text="${item.timeSeconds}">Timed</td>
+							<td th:text="${item.allRequired}">Required</td>
+						</tr>
+						</tbody>
+					</table>
+		</div></div></div>
+		<div class='col-xs-7'><div class="x_panel"><div class="x_title"><h3>Questions</h3></div><div class="x_content">
+								<table id='questtable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th>Id</th>
+							<th>Type</th>
+							<th>Corefactor</th>
+							<th>Sec.</th>
+							<th>Seq.</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="item : ${item.surveyQuestions}">
+							<td><a th:title="${item.question.questionText}" th:text="${item.questionId}" th:href="${'/admin/question/' + item.questionId}">Id</a></td>
+							<td th:text="${item.question.type}">Type</td>
+							<td th:text="${item.question.corefactorName}">Corefactor</td>
+							<td th:text="${item.page}">Sec.</td>
+							<td th:text="${item.sequence}">Seq.</td>
+						</tr>
+						</tbody>
+					</table>
+		</div>
+				<script>
+			$(document).ready(function() {
+			    $('#questtable').DataTable();
+			    $('#sectiontable').DataTable();
+			} );
+		</script>
+		</div></div>
+	</div>
+</body>
+</html>

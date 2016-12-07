@@ -20,10 +20,10 @@
 					  <thead>
 						<tr>
 							<th>Id</th>
+							<th>Name</th>
 							<th>Description</th>
-							<th>Low End</th>
-							<th>High End</th>
-							<th>Corefactor</th>
+							<th>Type</th>
+							<th>Status</th>
 							<th>View</th>
 							<th>Edit</th>
 							<th>Delete</th>
@@ -31,19 +31,19 @@
 						</thead><tbody>
 						<tr th:each="item : ${items}">
 							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
-							<td th:text="${item.description}">Description</td>
-							<td th:text="${item.lowEnd}">Low End</td>
-							<td th:text="${item.highEnd}">High End</td>
-							<td>
-								<a th:href="${'/admin/corefactor/' + item.corefactor.id}" th:text="${item.corefactor.name}">Corefactor</a>
-							</td>
+							<td th:text="${item.name}">Name</td>
+							<td th:utext="${item.description}">Description</td>
+							<td th:text="${item.surveyStatus}">Status</td>
+							<td th:text="${item.surveyStatus}">Type</td>						
 							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
 						</tr>
 						</tbody>
 					</table>
+
 				</div>
+
 			</div>
 		</div>
 		<script>
