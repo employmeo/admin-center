@@ -5,11 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.employmeo.data.model.Corefactor;
 import com.employmeo.data.model.Survey;
 import com.employmeo.data.model.SurveyQuestion;
 import com.employmeo.data.model.SurveySection;
-import com.employmeo.data.service.CorefactorService;
+import com.employmeo.data.model.SurveySectionPK;
+import com.employmeo.data.service.QuestionService;
 import com.employmeo.data.service.SurveyService;
 
 @Controller
@@ -18,14 +18,13 @@ public class SurveyController {
 
 	@Autowired
 	SurveyService surveyService;
+	
+	@Autowired
+	QuestionService questionService;
 
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "survey";
-	private static final String SECTION_MODEL = "survey/surveySection";
-	private static final String QUESTION_MODEL = "survey/surveyQuestion";
 	private static final String MODEL_DISPLAY = "Survey";
-	private static final String SECTION_MODEL_DISPLAY = "SurveySection";
-	private static final String QUESTION_MODEL_DISPLAY = "SurveyQuestion";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
 	private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
@@ -65,6 +64,7 @@ public class SurveyController {
     public String view(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
+    	model.addAttribute("allQuestions", questionService.getAllQuestions());
         model.addAttribute("item", surveyService.getSurveyById(id));
         return DISPLAY_VIEW;
     }
@@ -80,7 +80,25 @@ public class SurveyController {
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
     	SurveySection saved = surveyService.save(surveySection);
-        return "redirect:/admin/" + MODEL + "/" + saved.getSurvey().getId();
+        return "redirect:/admin/" + MODEL + "/" + saved.getId().getSurveyId();
+    }
+    
+    @RequestMapping(value = "{id}/section/{sectionNum}/delete", method = RequestMethod.GET)
+    public String deleteSection(@PathVariable Long id, @PathVariable Integer sectionNum, Model model){
+    	model.addAttribute("model", MODEL);
+    	model.addAttribute("modelDisplay", MODEL_DISPLAY);
+    	SurveySectionPK pk = new SurveySectionPK(id, sectionNum);
+    	surveyService.removeSection(pk);
+        return "redirect:/admin/" + MODEL + "/" + id;
+    }
+    
+    @RequestMapping(value = "add/question", method = RequestMethod.POST)
+    public String addQuestion(SurveyQuestion surveyQuestion, Model model){
+    	System.out.println(surveyQuestion);
+    	model.addAttribute("model", MODEL);
+    	model.addAttribute("modelDisplay", MODEL_DISPLAY);
+    	SurveyQuestion saved = surveyService.save(surveyQuestion);
+        return "redirect:/admin/" + MODEL + "/" + saved.getSurveyId();
     }
     
     @RequestMapping(value = "save/question", method = RequestMethod.POST)
@@ -90,5 +108,12 @@ public class SurveyController {
     	SurveyQuestion saved = surveyService.save(surveyQuestion);
         return "redirect:/admin/" + MODEL + "/" + saved.getSurveyId();
     }
-     
+    
+    @RequestMapping(value = "{id}/question/{sqId}/delete", method = RequestMethod.GET)
+    public String deleteQuestion(@PathVariable Long id, @PathVariable Long sqId, Model model){
+    	model.addAttribute("model", MODEL);
+    	model.addAttribute("modelDisplay", MODEL_DISPLAY);
+    	surveyService.removeQuestion(sqId);
+        return "redirect:/admin/" + MODEL + "/" + id;
+    }
 }
