@@ -23,7 +23,8 @@ adminPortal.prototype.init = function() {
 	while (match = search.exec(query)) this.urlParams[decode(match[1])] = decode(match[2]);
 
 	// Check for autologin, and trigger remaining pieces
-	getUser(this);
+	//getUser(this);
+	this.showLoginForm();
 }
 
 adminPortal.prototype.showLoginForm = function () {

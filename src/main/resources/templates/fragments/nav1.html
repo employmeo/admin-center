@@ -15,15 +15,15 @@
 <link rel='stylesheet' type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
 <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.css"/>
 <link rel='stylesheet' type='text/css' href='/css/custom.css' media='all' />
 <link rel='stylesheet' type='text/css' href='/css/admin_style.css' media='all' />
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
@@ -32,6 +32,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/responsive.bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.js"></script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.0/tinymce.min.js'></script>
 <script type="text/javascript" src='/js/stub_scripts.js'></script>
 <script type="text/javascript" src='/js/portal_api.js'></script>
 <script type="text/javascript" src='/js/portal.js'></script>
@@ -42,8 +43,8 @@
 <div th:fragment="leftnav">
 	    <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="#" onClick="portal.showComponent('dash');" class="site_title"><span>
-              <img height="55px" width="auto" src="/images/tal-logo-sm.png" alt="Talytica"/></span></a>
+            <a href="/admin/index" class="site_title"><span>
+              <img height="55px" width="auto" src="/images/tal-logo-sm.png" alt="Talytica"/></span></a>             
           </div>
           <div class="clearfix"></div>
           <br/>
@@ -51,21 +52,20 @@
           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
               <ul class="nav side-menu">
-                <li class="active"><a href="#" onClick="portal.showComponent('dash');"><i class="fa fa-tachometer"></i> Dashboard</a>
+                <li>
+                	<a href="/admin/corefactor"><i class="fa fa-tachometer"></i>Corefactors</a>
                 </li>
-                <li><a><i class="fa fa-users"></i> Candidates <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu" style="display: block;">
-                    <li><a href="#" onClick="portal.showComponent('invite_applicant');">Send Assessment</a></li>
-                    <li><a href="#" onClick="portal.showComponent('completed_applications');">Candidate Search</a></li>                  
-                  </ul>
-                  </li>
-                <li><a href="#" onClick="portal.showComponent('positions');"><i class="fa fa-briefcase"></i> Positions</a></li>
-                <li><a href="#" onClick="portal.showComponent('grading');"><i class="fa fa-briefcase"></i> Grading</a></li>
-                <li><a href="#" onClick="portal.showComponent('assessments');"><i class="fa fa-edit"></i> Assessments</a></li>
-                <li><a><i class="fa fa-gears"></i> Administration <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu" style="display: none;">
-						<li><a href="#" onClick="portal.showComponent('data_admin');">User Administration</a></li>
-                    </ul>
+                <li>
+                	<a href="/admin/corefactorDescription"><i class="fa fa-tachometer"></i>Corefactor Descriptions</a>
+                </li>
+                <li>
+                	<a href="/admin/question"><i class="fa fa-tachometer"></i>Questions</a>
+                </li>
+                <li>
+                	<a href="/admin/answer"><i class="fa fa-tachometer"></i>Answers</a>
+                </li>
+                <li>
+                	<a href="/admin/survey"><i class="fa fa-tachometer"></i>Surveys</a>
                 </li>
               </ul>
             </div>

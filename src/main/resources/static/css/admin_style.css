@@ -149,6 +149,10 @@ audio {
     background-color: #eee;
 }
 
+.table>tbody>tr.selected {
+    background-color: #ddd;
+}
+
 .squarecontent {
     position: absolute;
     height: 100%;

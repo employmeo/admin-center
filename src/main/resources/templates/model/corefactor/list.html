@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-8"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
+			  <div class="col-xs-4"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<div th:if="${not #lists.isEmpty(items)}">
+					<table id='listtable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Source</th>
+							<th>Foreign Id</th>
+							<th>Display Group</th>
+							<th>Low Value</th>
+							<th>High Value</th>
+							<th>Low Description</th>
+							<th>High Description</th>
+							<th>Corefactor Descriptions</th>
+							<th>View</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+						</thead><tbody>
+						<tr th:each="item : ${items}">
+							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
+							<td th:text="${item.name}">Name</td>
+							<td th:text="${item.description}">Description</td>
+							<td th:text="${item.source}">Source</td>
+							<td th:text="${item.foreignId}">Foreign Id</td>
+							<td th:text="${item.displayGroup}">Display Group</td>
+							<td th:text="${item.lowValue}">Low Value</td>
+							<td th:text="${item.highValue}">High Value</td>
+							<td th:text="${item.lowDescription}">Low Description</td>
+							<td th:text="${item.highDescription}">High Description</td>
+							<td>
+								<ul class="list-group" style="margin-bottom:0px;">
+									<th:block th:object="${item}">
+										<li class="list-group-item" style="padding:2px;" th:each="cd : *{corefactorDescriptions}">
+											<a th:href="${'/admin/corefactorDescription/' + cd.id}" th:text="${cd.lowEnd + ' to ' + cd.highEnd}" th:attr="title=${cd.description}">Corefactor Description</a>
+										</li>
+									</th:block>
+								</ul>
+							</td>
+							
+							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
+							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
+							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
+							
+						</tr>
+						</tbody>
+					</table>
+
+				</div>
+
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+			    $('#listtable').DataTable();
+			} );
+		</script>
+	</div>
+</body>
+</html>

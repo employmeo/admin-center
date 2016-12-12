@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-8"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
+			  <div class="col-xs-4"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<div th:if="${not #lists.isEmpty(items)}">
+					<table id='listtable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th>Id</th>
+							<th>Value</th>
+							<th>Text</th>
+							<th>Media</th>
+							<th>Question Id</th>
+							<th>View</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+						</thead><tbody>
+						<tr th:each="item : ${items}">
+							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
+							<td th:text="${item.answerValue}">Value</td>
+							<td th:text="${item.answerText}">Text</td>
+							<td>
+							  <th:block th:if="${item.answerMedia}">
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.jpg')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.jpeg')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.gif')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.png')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.mp3')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.aifc')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							  </th:block>
+							</td>
+							<td th:text="${item.questionId}">Question</td>
+						
+							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
+							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
+							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
+						</tr>
+						</tbody>
+					</table>
+
+				</div>
+
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+			    $('#listtable').DataTable();
+			} );
+		</script>
+	</div>
+</body>
+</html>
