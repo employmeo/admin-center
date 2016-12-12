@@ -10,8 +10,18 @@
 	<div layout:fragment="content">
 		<div class="x_panel">
 			<div class="x_title">
-			  <div class="col-xs-8"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
-			  <div class="col-xs-4"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
+			  <div class="col-xs-3"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
+			  <div class="col-xs-6">
+			  <form class="form form-inline" action="javascript:addQuestionsToSurvey();">
+			  <label class="control-label" for="surveysection">Add <span id='selectedqcount'>0</span> Selected Questions To:</label>
+			  <select name="surveysection" id="surveysection" class="form-control">
+			    <option th:each="section : ${allSurveySections}" th:value="${section.id.surveyId + ':' +section.id.sectionNumber}" th:text="${'Survey #' + section.id.surveyId + ' - Section ' + section.id.sectionNumber}">Wireframe</option>
+			  </select>
+			  <button type="submit" class="btn btn-primary">Add</button>			  
+			  </form>
+			  
+			  </div>
+			  <div class="col-xs-3"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
 			  <div class="clearfix"></div>
 			</div>
 			<div class="x_content">
@@ -19,6 +29,7 @@
 					<table id='listtable' class="table table-striped table-condensed">
 					  <thead>
 						<tr>
+							<th></th>
 							<th>Id</th>
 							<th>Type</th>
 							<th>Corefactor</th>
@@ -37,6 +48,7 @@
 						</thead>
 						<tbody>
 						<tr th:each="item : ${items}">
+							<td th:text="${item.questionId}">Id</td>
 							<td><a th:text="${item.questionId}" th:href="${'/admin/' + model + '/' + item.questionId}">Id</a></td>
 							<td th:text="${item.type}">Type</td>
 							<td th:text="${item.corefactorName}">Corefactor</td>
@@ -50,7 +62,6 @@
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.mp3')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.aifc')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							  </th:block>
-							
 							</td>
 							<td th:text="${item.description}">Description</td>
 							<td th:text="${item.foreignSource}">Foreign Source</td>
@@ -73,19 +84,61 @@
 							<td><a th:href="${'/admin/' + model + '/' + item.questionId}">View</a></td>
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.questionId}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.questionId}">Delete</a></td>
-							
 						</tr>
 						</tbody>
 					</table>
-
 				</div>
 
 			</div>
 		</div>
 		<script>
+			var qTable;
 			$(document).ready(function() {
-			    $('#listtable').DataTable();
-			} );
+			    qTable = $('#listtable').DataTable({
+			    	columnDefs : [{
+			    		visible: false,
+			    		targets : 0
+			    	}]
+			    });
+				qTable.$('tr').click(function (){
+					$(this).toggleClass('selected');
+					$('#selectedqcount').text(qTable.$('tr.selected').length);
+					
+				});
+			});
+			function addQuestionsToSurvey() {
+				var sqs = [];
+				var ss = $('#surveysection').val().split(':');
+				qTable.$('tr.selected').each(function () {
+					var rowdata = $('#listtable').dataTable().fnGetData(this);
+					var sques = {};
+					sques.surveyId = parseInt(ss[0]);
+					sques.questionId = parseInt(rowdata[0]);
+					sques.page = parseInt(ss[1]);
+					sques.sequence = 1;
+					sques.required = true;
+					sqs.push(sques);
+				});
+				$('#wait').removeClass('hidden');
+				console.log('posting',sqs);
+				$.ajax({
+						type: "POST",
+						async: true,
+						url: "/admin/survey/"+ss[0]+"/addquestions",
+					    headers: { 
+					        'Content-Type': 'application/json' 
+					    },
+						data: JSON.stringify(sqs),
+						success: function(data) {
+							$('#wait').addClass('hidden');
+							window.alert('success');
+						},
+						error: function(a,b,data) {
+							$('#wait').addClass('hidden');
+							window.alert('error');
+						}
+				});
+			}
 		</script>
 	</div>
 </body>

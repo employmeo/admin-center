@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import com.employmeo.data.model.Corefactor;
 import com.employmeo.data.model.Question;
 import com.employmeo.data.model.QuestionType;
+import com.employmeo.data.model.SurveySection;
 import com.employmeo.data.repository.QuestionTypeRepository;
 import com.employmeo.data.service.CorefactorService;
 import com.employmeo.data.service.QuestionService;
+import com.employmeo.data.service.SurveyService;
 
 @Controller
 @RequestMapping("/admin/question")
@@ -23,6 +25,9 @@ public class QuestionController {
 	
 	@Autowired
 	CorefactorService corefactorService;
+	
+	@Autowired
+	SurveyService surveyService;
 	
 	@Autowired
 	QuestionTypeRepository questionTypeRepository;
@@ -87,5 +92,10 @@ public class QuestionController {
     @ModelAttribute("allTypes")
     public Iterable<QuestionType> populateTypes() {
         return questionTypeRepository.findAll();
+    }
+    
+    @ModelAttribute("allSurveySections")
+    public Iterable<SurveySection> getSurveySections() {
+        return surveyService.getAllSurveySections();
     }
 }

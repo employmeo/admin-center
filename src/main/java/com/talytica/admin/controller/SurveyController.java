@@ -116,4 +116,13 @@ public class SurveyController {
     	surveyService.removeQuestion(sqId);
         return "redirect:/admin/" + MODEL + "/" + id;
     }
+    
+    
+    @RequestMapping(value = "{surveyId}/addquestions", method = RequestMethod.POST, produces = "application/json")
+    public String addQuestions(@RequestBody Iterable<SurveyQuestion> questions, @PathVariable Long surveyId,  Model model){
+    	surveyService.save(questions);
+    	model.addAttribute("model", MODEL);
+    	model.addAttribute("modelDisplay", MODEL_DISPLAY);
+        return "redirect:/admin/" + MODEL + "/" + surveyId;
+    }
 }
