@@ -20,8 +20,10 @@
 					  <thead>
 						<tr>
 							<th>Id</th>
+							<th>Display Id</th>
 							<th>Value</th>
 							<th>Text</th>
+							<th>Description</th>
 							<th>Media</th>
 							<th>Question Id</th>
 							<th>View</th>
@@ -31,8 +33,10 @@
 						</thead><tbody>
 						<tr th:each="item : ${items}">
 							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
+						    <td th:text="${item.displayId}">Display Id</td>
 							<td th:text="${item.answerValue}">Value</td>
 							<td th:text="${item.answerText}">Text</td>
+							<td th:text="${item.description}">Description</td>
 							<td>
 							  <th:block th:if="${item.answerMedia}">
 							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.jpg')}" th:src="${item.answerMedia}" class="img-thumbnail" />
@@ -44,7 +48,6 @@
 							  </th:block>
 							</td>
 							<td th:text="${item.questionId}">Question</td>
-						
 							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
