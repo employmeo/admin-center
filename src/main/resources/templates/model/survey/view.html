@@ -59,6 +59,7 @@
 					  <thead>
 						<tr>
 							<th>#</th>
+							<th>Name</th>
 							<th>Qs /Page</th>
 							<th>Timed</th>
 							<th>Required</th>
@@ -69,6 +70,7 @@
 						<tbody>
 						<tr th:each="section : ${item.surveySections}" th:title="${section.instructions}" >
 							<td th:text="${section.id.sectionNumber}">Id</td>
+							<td th:text="${section.name}">Name</td>
 							<td th:text="${section.questionsPerPage}">Qs /Page</td>
 							<td th:text="${section.timeSeconds}">Timed</td>
 							<td th:text="${section.allRequired}">Required</td>
@@ -81,12 +83,16 @@
 					<div><h2>Add New Section <i class="pull-right fa fa-plus-square" onclick="$('#newsection').slideToggle();"></i></h2></div>
 					<div id='newsection' style="display:none;">
 					<form th:action="${'/admin/' + model + '/save/section'}" method="POST" class="form">
-					<div class="form-group-inline">
+					<div class="form-group col-xs-6">
+						<label for="name" class="control-label">Section Name:</label>
+						<input type="text" id="name" name="name" class="form-control" />
+					</div>
+					<div class="form-group col-xs-6">
 						<label for="id.sectionNumber" class="control-label">Section Number:</label>
 						<input th:value="${(1+#lists.size(item.surveySections))}" type="text" id="id.sectionNumber" name="id.sectionNumber" class="form-control" />
 						<input th:value="${item.id}" type="hidden" id="id.surveyId" name="id.surveyId"/>
 					</div>
-					<div class="form-group">
+					<div class="form-group col-xs-12">
 						<label for="instructions" class="control-label">Instructions</label>
 						<textarea class="form-control" name="instructions" id="instructions"></textarea>
 					</div>
