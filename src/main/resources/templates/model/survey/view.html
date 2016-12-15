@@ -121,21 +121,31 @@
 					  <thead>
 						<tr>
 							<th>Sec+Seq.</th>
-							<th>Id</th>
-							<th>Type</th>
-							<th>Corefactor</th>
-							<th>Edit</th>
+							<th>Ques Id</th>
+							<th>Description</th>
+							<th>Edit Seq</th>
 							<th>Delete</th>
 						</tr>
 						</thead>
 						<tbody>
-						<tr th:each="item : ${item.surveyQuestions}" th:title="${item.question.questionText}" >
-							<td th:text="${item.page + ' - ' + #numbers.formatInteger(item.sequence,3)}">Sec.</td>
-							<td><a th:text="${item.questionId}" th:href="${'/admin/question/' + item.questionId}">Id</a></td>
-							<td th:text="${item.question.type}">Type</td>
-							<td th:text="${item.question.corefactorName}">Corefactor</td>
-							<td><a th:href="${'/admin/survey/' + item.surveyId + '/question/' + item.id +'/edit' }">Edit</a></td>
-							<td><a th:href="${'/admin/survey/' + item.surveyId + '/question/' + item.id +'/delete' }">Delete</a></td>
+						<tr th:each="ques: ${item.surveyQuestions}" th:title="${ques.question.questionText}" >
+							<td><a th:href="${'/admin/survey/' + ques.surveyId + '/question/' + ques.id +'/edit' }"
+							  th:text="${ques.page + ' - ' + #numbers.formatInteger(ques.sequence,3)}">Sec.</a></td>
+							<td><a th:text="${ques.questionId}" th:href="${'/admin/question/' + ques.questionId}">Id</a></td>
+							<td th:text="${ques.question.description}">Description</td>
+							<td>
+								<form class="form-horizontal" th:object="${ques}" th:action="${'/admin/' + model + '/save/question'}"  method="post">
+								<input type="hidden" class="form-control" th:value="${ques.id}" id="id" name="id" />
+								<input type="hidden" class="form-control" th:value="${ques.questionId}" id="questionId" name="questionId" />
+								<input type="hidden" class="form-control" th:value="${ques.surveyId}" id="surveyId" name="surveyId" />
+								<input type="hidden" class="form-control" th:value="${ques.page}" id="page" name="page" />
+								<input type="hidden" class="form-control" th:value="${ques.dependency}" id="dependency" name="dependency"/>
+								<input type="hidden" class="form-control" th:value="${ques.required}" id="required" name="required" />
+								<input type="text" style="width:55px" class="form-control text-right" pattern="\d+" th:value="${ques.sequence}" id="sequence" name="sequence" />
+								<button type="submit" class="btn btn-primary btn-xs">Save</button>
+								</form>
+							</td>							
+							<td><a th:href="${'/admin/survey/' + ques.surveyId + '/question/' + ques.id +'/delete' }">Delete</a></td>
 						</tr>
 						</tbody>
 					</table>
