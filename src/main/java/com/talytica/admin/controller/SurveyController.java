@@ -28,6 +28,8 @@ public class SurveyController {
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
 	private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
+	private static final String EDIT_SECTION = FRAGMENT_ROOT + MODEL + "/editsection";
+	private static final String EDIT_QUESTION = FRAGMENT_ROOT + MODEL + "/editquestion";
 	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
 
     @RequestMapping(value = {"","list"}, method = RequestMethod.GET)
@@ -75,6 +77,16 @@ public class SurveyController {
         return "redirect:/admin/" + MODEL ;
     }
        
+    @RequestMapping(value = "{id}/section/{sectionNum}/edit", method = RequestMethod.GET)
+    public String editSection(@PathVariable Long id, @PathVariable Integer sectionNum, Model model){
+    	model.addAttribute("model", MODEL);
+    	model.addAttribute("modelDisplay", MODEL_DISPLAY);
+    	SurveySectionPK pk = new SurveySectionPK(id, sectionNum);
+    	SurveySection surveySection = surveyService.getSurveySectionById(pk);
+    	model.addAttribute("item",surveySection);
+        return EDIT_SECTION;
+    }
+    
     @RequestMapping(value = "save/section", method = RequestMethod.POST)
     public String saveSection(SurveySection surveySection, Model model){
     	model.addAttribute("model", MODEL);
@@ -92,14 +104,14 @@ public class SurveyController {
         return "redirect:/admin/" + MODEL + "/" + id;
     }
     
-    @RequestMapping(value = "add/question", method = RequestMethod.POST)
-    public String addQuestion(SurveyQuestion surveyQuestion, Model model){
-    	System.out.println(surveyQuestion);
+    @RequestMapping(value = "{id}/question/{sqId}/edit", method = RequestMethod.GET)
+    public String editQuestion(@PathVariable Long id, @PathVariable Long sqId, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	SurveyQuestion saved = surveyService.save(surveyQuestion);
-        return "redirect:/admin/" + MODEL + "/" + saved.getSurveyId();
-    }
+    	SurveyQuestion surveyQuestion = surveyService.getSurveyQuestionById(sqId);
+    	model.addAttribute("item",surveyQuestion);
+        return EDIT_QUESTION;
+    }    
     
     @RequestMapping(value = "save/question", method = RequestMethod.POST)
     public String saveQuestion(SurveyQuestion surveyQuestion, Model model){
@@ -115,8 +127,7 @@ public class SurveyController {
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
     	surveyService.removeQuestion(sqId);
         return "redirect:/admin/" + MODEL + "/" + id;
-    }
-    
+    }    
     
     @RequestMapping(value = "{surveyId}/addquestions", method = RequestMethod.POST, produces = "application/json")
     public String addQuestions(@RequestBody Iterable<SurveyQuestion> questions, @PathVariable Long surveyId,  Model model){
