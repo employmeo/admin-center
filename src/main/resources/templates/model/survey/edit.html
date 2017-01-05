@@ -4,7 +4,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	layout:decorator="layouts/index-layout">
 <head lang="en">
-<title th:text="${modelDisplay + ' List'} ">Listings</title>
+<title th:text="${'Edit ' + modelDisplay + } ">Edit</title>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -49,6 +49,12 @@
 					<label class="col-sm-2 control-label">Type:</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" th:field="*{surveyType}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Availability:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{availability}" />
 					</div>
 				</div>
 				<div class="form-group col-sm-12 text-center">
