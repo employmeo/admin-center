@@ -12,6 +12,9 @@ import com.employmeo.data.model.Answer;
 import com.employmeo.data.service.CorefactorService;
 import com.employmeo.data.service.QuestionService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/admin/answer")
 public class AnswerController {
@@ -91,8 +94,11 @@ public class AnswerController {
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable Long id, Model model){
-    	// questionService.deleteAnswer(id);
-        return "redirect:/admin/" + MODEL ;
+    	log.debug("Processing request to delete answer {}", id);
+    	questionService.deleteAnswer(id);
+    	log.debug("Deleted answer {}", id);
+    	return list(model);
+        //return "redirect:/admin/" + MODEL;
     }
     
     @ModelAttribute("allCorefactors")

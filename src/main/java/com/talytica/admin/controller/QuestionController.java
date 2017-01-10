@@ -80,7 +80,7 @@ public class QuestionController {
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable Long id, Model model){
-    	// questionService.delete(id);
+    	questionService.deleteQuestion(id);
         return "redirect:/admin/" + MODEL ;
     }
     
