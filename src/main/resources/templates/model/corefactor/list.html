@@ -20,6 +20,7 @@
 					  <thead>
 						<tr>
 							<th>Id</th>
+							<th>parentId</th>
 							<th>Name</th>
 							<th>Description</th>
 							<th>Source</th>
@@ -37,6 +38,7 @@
 						</thead><tbody>
 						<tr th:each="item : ${items}">
 							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
+							<td><a th:if="${item.parentId != null}" th:text="${item.parentId}" th:href="${'/admin/' + model + '/' + item.parentId}">Parent Id</a></td>
 							<td th:text="${item.name}">Name</td>
 							<td th:text="${item.description}">Description</td>
 							<td th:text="${item.source}">Source</td>
