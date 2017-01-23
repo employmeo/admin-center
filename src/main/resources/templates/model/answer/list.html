@@ -24,6 +24,7 @@
 							<th>Value</th>
 							<th>Text</th>
 							<th>Description</th>
+							<th>Direction</th>
 							<th>Media</th>
 							<th>Question Id</th>
 							<th>View</th>
@@ -37,6 +38,7 @@
 							<td th:text="${item.answerValue}">Value</td>
 							<td th:text="${item.answerText}">Text</td>
 							<td th:text="${item.description}">Description</td>
+							<td th:text="${item.direction}">Direction</td>
 							<td>
 							  <th:block th:if="${item.answerMedia}">
 							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.jpg')}" th:src="${item.answerMedia}" class="img-thumbnail" />
