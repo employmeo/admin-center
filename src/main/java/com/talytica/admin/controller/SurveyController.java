@@ -26,7 +26,7 @@ public class SurveyController {
 	private static final String MODEL = "survey";
 	private static final String MODEL_DISPLAY = "Survey";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
-	private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
+	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
 	private static final String EDIT_SECTION = FRAGMENT_ROOT + MODEL + "/editsection";
 	private static final String EDIT_QUESTION = FRAGMENT_ROOT + MODEL + "/editquestion";

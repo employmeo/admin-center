@@ -1,7 +1,5 @@
 package com.talytica.admin.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +29,7 @@ public class AnswerController {
 	private static final String MODEL = "answer";
 	private static final String MODEL_DISPLAY = "Answer";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
-	private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
+	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
 	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
 
