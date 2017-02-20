@@ -28,6 +28,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Name</th>
+						<th>Short Desc</th>
 						<th>Type</th>
 						<th>Status</th>
 						<th>Availability</th>
@@ -37,6 +38,7 @@
 					<tr>
 						<td th:text="${item.id}"></td>
 						<td th:text="${item.name}">Name</td>
+						<td th:text="${item.oneLiner}">One Liner</td>
 						<td th:text="${item.surveyStatus}">Status</td>
 						<td th:text="${item.surveyStatus}">Type</td>
 						<td th:text="${item.availability}">Availability</td>

@@ -24,7 +24,7 @@ public class CorefactorDescriptionController {
 	private static final String MODEL = "corefactorDescription";
 	private static final String MODEL_DISPLAY = "Corefactor Description";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
-	private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
+	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
 	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
 
