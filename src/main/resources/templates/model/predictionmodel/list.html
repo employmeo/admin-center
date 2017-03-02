@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-6"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
+			  <div class="col-xs-6"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<div th:if="${not #lists.isEmpty(items)}">
+					<table id='listtable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th th:each="field : ${fieldnames}" th:component="${field}" th:if="${#strings.indexOf(field.type,'class java')} == 0" th:text="${field.name}"></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="item : ${items}">
+							<td th:each="field : ${fieldnames}" th:component="${field}" th:if="${#strings.indexOf(field.type,'class java')} == 0" th:text="${item.__${field.name}__}"></td>		
+							<td><a th:href="${'/admin/' + model + '/' + item.modelId}">View</a></td>
+							<td><a th:href="${'/admin/' + model + '/edit/' + item.modelId}">Edit</a></td>
+							<td><a th:href="${'/admin/' + model + '/delete/' + item.modelId}">Delete</a></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+		<script>
+			var qTable;
+			$(document).ready(function() {
+			    qTable = $('#listtable').DataTable({
+			    	columnDefs : [{
+			    		visible: false,
+			    		targets : 0
+			    	}]
+			    });
+				qTable.$('tr').click(function (){
+					$(this).toggleClass('selected');
+					$('#selectedqcount').text(qTable.$('tr.selected').length);
+					
+				});
+			});
+		</script>
+	</div>
+</body>
+</html>

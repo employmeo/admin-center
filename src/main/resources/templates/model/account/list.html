@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-6"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
+			  <div class="col-xs-6"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<div th:if="${not #lists.isEmpty(items)}">
+					<table id='listtable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Status</th>
+							<th>Type</th>
+							<th>Redirect Page</th>
+							<th>Sent By Email</th>
+							<th>Default Location</th>
+							<th>Default Position</th>
+							<th>Default Assessment</th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="item : ${items}">
+							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
+							<td th:text="${item.accountName}">Type</td>
+							<td th:text="${item.accountStatus}">Type</td>
+							<td th:text="${item.accountType}">Type</td>
+							<td th:text="${item.defaultRedirect}">Redirect</td>
+							<td th:text="${item.defaultEmail}">Email</td>
+							<td th:text="${item.defaultLocationId}">Location</td>
+							<td th:text="${item.defaultPositionId}">Position</td>		
+							<td th:text="${item.defaultAsId}">Assessment</td>				
+							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
+							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
+							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+		<script>
+			var qTable;
+			$(document).ready(function() {
+			    qTable = $('#listtable').DataTable({
+			    	columnDefs : [{
+			    		visible: false,
+			    		targets : 0
+			    	}]
+			    });
+				qTable.$('tr').click(function (){
+					$(this).toggleClass('selected');
+					$('#selectedqcount').text(qTable.$('tr.selected').length);
+					
+				});
+			});
+		</script>
+	</div>
+</body>
+</html>
