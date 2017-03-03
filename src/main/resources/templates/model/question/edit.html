@@ -39,7 +39,7 @@
 					<label class="col-sm-2 control-label">Corefactor:</label>
 					<div class="col-sm-10">
 					    <select class="form-control" th:field="*{corefactorId}">
-              			    <option th:each="corefactor : ${allCorefactors}" th:value="${corefactor.id}" th:text="${corefactor.name}">Wireframe</option>
+              			    <option th:each="corefactor : ${allCorefactors}" th:value="${corefactor.id}" th:text="${'('+corefactor.source+') ' + corefactor.name}">Wireframe</option>
             			</select>
 					</div>
 				</div>
@@ -90,7 +90,7 @@
 					<div class="col-sm-10" >
 								<ul>
 									<li th:each="ans : *{answers}">
-										<a th:href="${'/admin/answers/' + ans.id}" th:text="${ans.answerValue + ' : ' +ans.answerText}">Answer</a>
+										<a th:href="${'/admin/answer/edit/' + ans.id}" th:text="${ans.answerValue + ' : ' +ans.answerText}">Answer</a>
 									</li>
 								</ul>	
 					</div>
