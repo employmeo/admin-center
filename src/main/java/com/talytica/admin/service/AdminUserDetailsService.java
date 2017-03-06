@@ -21,14 +21,12 @@ public class AdminUserDetailsService implements UserDetailsService {
 
     @Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    	log.debug("User Lookup Attempt for: {}", email);
 		User user = userRepository.findByEmail(email);
-		if (user != null) {
-	    	log.debug("Found User: {}", user);
-			return new UserPrincipal(user);
-		} else {
-		    throw new UsernameNotFoundException(email);
-		}
+    	log.debug("User Lookup Attempt for: {}, with result {}", email, user);
+    	
+		if ((user != null) && (user.getUserType() == User.TYPE_SUPER)) return new UserPrincipal(user);
+		log.debug("User {} is not a super user", user);
+		throw new UsernameNotFoundException(email);
 	}
     
 }
