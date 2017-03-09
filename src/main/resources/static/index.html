@@ -34,16 +34,40 @@
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/responsive.bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.js"></script>
-<script type="text/javascript" src='/js/stub_scripts.js'></script>
-<script type="text/javascript" src='/js/portal_api.js'></script>
-<script type="text/javascript" src='/js/portal.js'></script>
+<script type="text/javascript" src='/js/admin.js'></script>
 
 </head>
 <body class="nav-md" id='mainbody'>
-  <div id='wait' class="text-center" style='position:absolute;width:100%;position: absolute;background: black;opacity: .75;padding: 35%;height: 100%;z-index: 99;'>
+  <div id='wait' class="text-center hidden" style='position:absolute;width:100%;position: absolute;background: black;opacity: .75;padding: 35%;height: 100%;z-index: 99;'>
     <i class="fa fa-spinner fa-5x fa-spin"></i>
   </div>
   <div id="login" class="container-fluid">
+      <div id="wrapper">
+      <div class="container" style="background: rgba(0, 0, 0, 0.65);color: white;">
+	    <div class="col-xs-12 text-center"><img src="/images/tal-logo-sm.png" style="width:65%;"></div>
+	    <div class="col-xs-12 text-center"><h1>Admin Center</h1></div>
+	    <div class="col-xs-12 text-center"><hr></div>
+              
+        <div id='logindiv' class="col-xs-12 text-center">
+	      <form name="login" onsubmit="adminLogin();return false;" id="loginform">
+			<div class="clearfix"><span class='text-danger h4' id='loginresponse'></span></div>
+			<div class="clearfix" style="height: 15px;"></div>
+			<div class="col-xs-12 form-group"><div class="input-group"><div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+			  <input class="form-control" type="email" name="email" required placeholder="Email Address"></div></div>
+			<div class="col-xs-12 form-group"><div class="input-group"><div class="input-group-addon"><i class="fa fa-key"></i></div>
+			  <input class="form-control" type="password" name="password" placeholder="Password" required></div></div>
+            <div class="col-xs-6 form-group">
+              <input type="checkbox" id="rememberme" name="rememberme" value="true" checked>
+              <label for="rememberme" style="line-height:22px;vertical-align:middle;">&nbsp;Stay Logged In</label>
+            </div>
+            <div class="col-xs-12 form-group"><button class="btn btn-info btn-block submit" type="submit">Log In</button></div>
+			<div class="clearfix" style="height: 15px;"></div>
+
+            <div class="col-xs-12 text-center"><br></div>
+          </form>
+        </div>    
+      </div>
+  </div>
   </div>
   <div id='portal' class="hidden container body">
     <div class="main_container">
@@ -57,13 +81,11 @@
      </div>
   </div>
 </body>
-
 <script>
 $(".right_col").css("min-height", $(window).height());
 $(window).resize(function () {
     $(".right_col").css("min-height", $(window).height());
 });
-var portal = new adminPortal();
+readyNav();
 </script>
-
 </html>
