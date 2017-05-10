@@ -48,7 +48,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 	    		.authorizeRequests()
 	    		  .antMatchers("/", "/static/**", "/components/**", "/forgotpassword", "/changepassword", "/login").permitAll()
 	    		  .antMatchers("/admin/**").authenticated()
-	    		  .anyRequest().authenticated()
+	    		  .anyRequest().permitAll()
 	    		.and()
 	    		  .formLogin()
 	    		  	.loginPage("/")
