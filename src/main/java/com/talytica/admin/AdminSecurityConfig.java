@@ -39,7 +39,6 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 	        auth
 	          .userDetailsService(userCredentialService)
 	          .passwordEncoder(passwordEncoder());
-
 	        }
 
 	    @Override
@@ -48,7 +47,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 	    		.authorizeRequests()
 	    		  .antMatchers("/", "/static/**", "/components/**", "/forgotpassword", "/changepassword", "/login").permitAll()
 	    		  .antMatchers("/admin/**").authenticated()
-	    		  .anyRequest().permitAll()
+	    		  .anyRequest().authenticated()
 	    		.and()
 	    		  .formLogin()
 	    		  	.loginPage("/")
