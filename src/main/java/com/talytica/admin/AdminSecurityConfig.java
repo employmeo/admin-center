@@ -39,7 +39,6 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 	        auth
 	          .userDetailsService(userCredentialService)
 	          .passwordEncoder(passwordEncoder());
-
 	        }
 
 	    @Override
