@@ -120,7 +120,6 @@
 					sqs.push(sques);
 				});
 				$('#wait').removeClass('hidden');
-				console.log('posting',sqs);
 				$.ajax({
 						type: "POST",
 						async: true,
@@ -131,11 +130,13 @@
 						data: JSON.stringify(sqs),
 						success: function(data) {
 							$('#wait').addClass('hidden');
-							window.alert('success');
+							var count = qTable.$('tr.selected').length;
+							window.alert('Successfully added ' + count + ' items' );
+							qTable.$('tr.selected').each(function () {$(this).toggleClass('selected');});
 						},
 						error: function(a,b,data) {
 							$('#wait').addClass('hidden');
-							window.alert('error');
+							window.alert('error', data);
 						}
 				});
 			}

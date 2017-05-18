@@ -47,7 +47,7 @@ function readyNav() {
 	    }
     });
     
-    sidebar.find('li ul').slideUp();
+    //sidebar.find('li ul').slideUp();
     sidebar.find('li').removeClass('active');
     sidebar.find('li').on('click', function(ev) {
 	    var link = $('a', this).attr('href');
