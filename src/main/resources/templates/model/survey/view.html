@@ -144,9 +144,10 @@
 								<input type="hidden" class="form-control" th:value="${ques.surveyId}" name="surveyId" />
 								<input type="hidden" class="form-control" th:value="${ques.page}" name="page" />
 								<input type="hidden" class="form-control" th:value="${ques.dependency}" name="dependency"/>
+								<input type="text" style="width:45px" class="form-control input-sm text-right" pattern="\d+" th:value="${ques.sequence}" name="sequence" />
+								<input type="checkbox" class="form-control" th:checked="${ques.required}" name="isRequired" onchange="changeSQRequired(this);"/>
 								<input type="hidden" class="form-control" th:value="${ques.required}" name="required" />
-								<input type="text" style="width:55px" class="form-control text-right" pattern="\d+" th:value="${ques.sequence}" name="sequence" />
-								<button type="submit" class="btn btn-primary btn-xs">Save</button>
+								<button type="submit" class="btn btn-primary btn-xs"><i class="fa fa-floppy-o"></i></button>
 								</form>
 							</td>							
 							<td><a th:href="${'/admin/survey/' + ques.surveyId + '/question/' + ques.id +'/delete' }">Delete</a></td>
@@ -160,7 +161,7 @@
 					<form th:action="${'/admin/' + model + '/save/question'}" method="POST" class="form">
 					<input th:value="${item.id}" type="hidden" id="surveyId" name="surveyId"/>
 					<div id='questiondiv' class="form-group has-feedback">
-						<label for="questionId" class="control-label">Select Question</label>
+						<label for="select-questionId" class="control-label">Select Question</label>
 						<input class="form-control" name="questionac" id="questionac" />
 						<select class="form-control" name="questionId" id="select-questionId" style="display:none;">
               			    <option th:each="question : ${allQuestions}" th:value="${question.questionId}" th:text="${question.questionText}">Wireframe</option>				
@@ -189,6 +190,9 @@
 					</div>
 		</div>
 				<script>
+				function changeSQRequired(input) {
+					var field = $(input).siblings("input[name='required']").val($(input).prop('checked'));
+				}
 			$(document).ready(function() {
 			    $('#questtable').DataTable();
 			    $('#sectiontable').DataTable();
@@ -207,9 +211,9 @@
 					if (!obj.item) {
 						$('#questiondiv').addClass('has-error');
 						$('#questiondiv').removeClass('has-success');
-						$('#questionId').val('');
+						$('#select-questionId').val('');
 					} else {
-						$('#questionId').val(obj.item.id);
+						$('#select-questionId').val(obj.item.id);
 						$('#questiondiv').removeClass('has-error');
 						$('#questiondiv').addClass('has-success');
 					}
