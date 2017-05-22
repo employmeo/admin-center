@@ -47,6 +47,9 @@
 							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.png')}" th:src="${item.answerMedia}" class="img-thumbnail" />
 							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.mp3')}" th:src="${item.answerMedia}" controls="controls"></audio>
 							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.aifc')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.wav')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							    <video th:if="${#strings.containsIgnoreCase(item.answerMedia,'.webm')}" th:src="${item.answerMedia}" controls="controls"></video>
+							    <video th:if="${#strings.containsIgnoreCase(item.answerMedia,'.mp4')}" th:src="${item.answerMedia}" controls="controls"></video>
 							  </th:block>
 							</td>
 							<td th:text="${item.questionId}">Question</td>
