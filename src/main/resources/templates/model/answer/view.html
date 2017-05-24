@@ -61,7 +61,18 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Media:</label>
 					<div class="col-sm-10">
-						<p class="form-control-static" th:text="${item.answerMedia}">Media</p>
+						<p th:if="${item.answerMedia}">
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.jpg')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.jpeg')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.gif')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <img th:if="${#strings.containsIgnoreCase(item.answerMedia,'.png')}" th:src="${item.answerMedia}" class="img-thumbnail" />
+							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.mp3')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.aifc')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							    <audio th:if="${#strings.containsIgnoreCase(item.answerMedia,'.wav')}" th:src="${item.answerMedia}" controls="controls"></audio>
+							    <video th:if="${#strings.containsIgnoreCase(item.answerMedia,'.webm')}" th:src="${item.answerMedia}" controls="controls"></video>
+							    <video th:if="${#strings.containsIgnoreCase(item.answerMedia,'.mp4')}" th:src="${item.answerMedia}" controls="controls"></video>
+						</p>
+						<p th:if="${item.answerMedia}"><a th:href="${item.answerMedia}" th:text="${item.answerMedia}"></a></p>
 					</div>
 				</div>
 				<div class="form-group">

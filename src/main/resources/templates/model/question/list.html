@@ -17,9 +17,8 @@
 			  <select name="surveysection" id="surveysection" class="form-control">
 			    <option th:each="section : ${allSurveySections}" th:value="${section.id.surveyId + ':' +section.id.sectionNumber}" th:text="${'Survey #' + section.id.surveyId + ' - Section ' + section.id.sectionNumber}">Wireframe</option>
 			  </select>
-			  <button type="submit" class="btn btn-primary">Add</button>			  
+			  <button type="submit" class="btn btn-primary">Add</button>		  
 			  </form>
-			  
 			  </div>
 			  <div class="col-xs-3"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
 			  <div class="clearfix"></div>
@@ -36,14 +35,14 @@
 							<th>Text</th>
 							<th>Media</th>
 							<th>Description</th>
-							<th>Foreign Source</th>
-							<th>Foreign Id</th>
 							<th>Direction</th>
+							<th>Scoring Model</th>
 							<th>Answers</th>
-							<th>Display Id</th>
 							<th>View</th>
 							<th>Edit</th>
 							<th>Delete</th>
+							<th>Foreign Source</th>
+							<th>Foreign Id</th>						
 						</tr>
 						</thead>
 						<tbody>
@@ -59,16 +58,18 @@
 							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.jpeg')}" th:src="${item.questionMedia}" class="img-thumbnail" />
 							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.gif')}" th:src="${item.questionMedia}" class="img-thumbnail" />
 							    <img th:if="${#strings.containsIgnoreCase(item.questionMedia,'.png')}" th:src="${item.questionMedia}" class="img-thumbnail" />
+							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.wav')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.mp3')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.aifc')}" th:src="${item.questionMedia}" controls="controls"></audio>
+							    <video th:if="${#strings.containsIgnoreCase(item.questionMedia,'.webm')}" th:src="${item.questionMedia}" controls="controls"></video>
+							    <video th:if="${#strings.containsIgnoreCase(item.questionMedia,'.mp4')}" th:src="${item.questionMedia}" controls="controls"></video>
 							  </th:block>
 							</td>
 							<td th:text="${item.description}">Description</td>
-							<td th:text="${item.foreignSource}">Foreign Source</td>
-							<td th:text="${item.foreignId}">Foreign Id</td>
 							<td th:text="${item.direction}">Direction</td>
+							<td th:text="${item.scoringModel}">Scoring Model</td>
 							<td>
-								<ul class="list-group" style="margin-bottom:0px;">
+								<ul class="list-group" style="margin-bottom:0px;max-height:23px;overflow-y: scroll;">
 									<th:block th:object="${item}">
 										<li class="list-group-item" style="padding:2px;" th:each="ans : *{answers}">
 											<a th:href="${'/admin/answer/' + ans.id}" th:text="${ans.answerValue + ' : ' +ans.answerText}">Answer</a>
@@ -79,16 +80,16 @@
 									</li>
 								</ul>
 							</td>
-							<td th:text="${item.displayId}">Display Id</td>
 							
 							<td><a th:href="${'/admin/' + model + '/' + item.questionId}">View</a></td>
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.questionId}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.questionId}">Delete</a></td>
+							<td th:text="${item.foreignSource}">Foreign Source</td>
+							<td th:text="${item.foreignId}">Foreign Id</td>
 						</tr>
 						</tbody>
 					</table>
 				</div>
-
 			</div>
 		</div>
 		<script>
@@ -97,7 +98,7 @@
 			    qTable = $('#listtable').DataTable({
 			    	columnDefs : [{
 			    		visible: false,
-			    		targets : 0
+			    		targets : [0,13,14]
 			    	}]
 			    });
 				qTable.$('tr').click(function (){
