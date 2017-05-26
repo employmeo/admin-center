@@ -1,15 +1,0 @@
-corefactor_id,corefactor_name,corefactor_description,cf_low,cf_high,cf_low_description,cf_high_description,cf_mean_score,cf_score_deviation,cf_measurements,cf_source,corefactor_foreign_id,cf_display_group,cf_parent_id
-1001,"Creative, Passionate","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV1,Voice Moods,
-1002,"Criticism, Cynicism","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV2,Voice Moods,
-1003,"Defensivness, Anxiety","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV3,Voice Moods,
-1004,"Friendly, Warm","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV4,Voice Moods,
-1005,"Hostility, Anger","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV5,Voice Moods,
-1006,"Leadership, Charisma","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV6,Voice Moods,
-1007,"Loneliness, Unfulfillment","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV7,Voice Moods,
-1008,"Love, Happiness","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV8,Voice Moods,
-1009,"Sadness, Sorrow","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV9,Voice Moods,
-1010,"Self-Control, Practicality","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV10,Voice Moods,
-1011,"Supremacy, Arrogance","Creative, Passionate",1,10,low,high,5,1,100,beyondverbal,BV11,Voice Moods,
-1012,Temper,Temper,1,10,low,high,5,1,100,beyondverbal,Temper,Audio Characteristics,
-1013,Valence,Valence,1,10,low,high,5,1,100,beyondverbal,Valence,Audio Characteristics,
-1014,Arousal,Arousal,1,10,low,high,5,1,100,beyondverbal,Arousal,Audio Characteristics,

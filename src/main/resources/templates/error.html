@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/index-layout">
+<head lang="en">
+<title>Talytica Admin Error Page</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="x_panel">
+				<div class="x_title text-center">
+					<h3>An Error Has Occurred</h3>
+				</div>
+				<div class="x_content">
+					<p th:if="${path}">
+						<b>Page:</b> <span th:text="${path}">Page URL</span>
+					</p>
+
+					<p th:if="${timestamp}" id='created'>
+						<b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
+					</p>
+					<p th:if="${status}">
+						<b>Response Status:</b> <span th:text="${status}">status-code</span>
+						<span th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+					</p>
+					<p th:if="${exception}">
+						<b>Exception: </b><span th:text="${exception}"></span>
+					</p>
+					<p th:if="(${message} and ${message.length() != 0})">
+						<b>Message: </b>
+					</p>
+					<blockquote th:if="${message} and ${message.length() != 0}"
+						th:text="${message}"></blockquote>
+						<p th:unless="${exception} or (${message} and ${message.length() != 0})">
+					Cause unknown (no exception details available)</p>	
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+	</div>
+</body>
+</html>

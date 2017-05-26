@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.apache.commons.lang3.StringEscapeUtils;
 import com.employmeo.data.model.Benchmark;
 import com.employmeo.data.model.Corefactor;
 import com.employmeo.data.model.Criterion;
 import com.employmeo.data.model.Outcome;
 import com.employmeo.data.model.Respondant;
+import com.employmeo.data.model.RespondantNVP;
 import com.employmeo.data.model.RespondantScore;
 import com.employmeo.data.repository.PredictionTargetRepository;
 import com.employmeo.data.service.AccountService;
@@ -115,6 +116,7 @@ public class BenchmarkController {
 
         for (Respondant respondant : respondants) {
 	       	Set<RespondantScore> scores = respondant.getRespondantScores();
+	       	Set<RespondantNVP> nvps = respondantService.getNVPsForRespondant(respondant.getId());
 	       	Set<Outcome> outcomes = respondantService.getOutcomesForRespondant(respondant.getId());
 	       	if (header == null) {
 	       		StringBuffer sbHeader = new StringBuffer();
@@ -125,6 +127,8 @@ public class BenchmarkController {
 	       			sbHeader.append(corefactor.getName());
 	       			headers.add(corefactor.getId());
 	       		}
+        		sbHeader.append(DELIMITER);
+        		sbHeader.append("FREETEXT"); // added this colmnn to slap on all words from NVP free-text.
         		sbHeader.append(DELIMITER);
         		sbHeader.append("OUTCOME");
         		sbHeader.append(NEWLINE);
@@ -138,6 +142,12 @@ public class BenchmarkController {
         		lineItem.append(DELIMITER);
         		lineItem.append(findCorefactorValue(cfid, scores));
 	       	}
+	       	lineItem.append(DELIMITER);
+	       	StringBuffer freeText = new StringBuffer();
+	       	for (RespondantNVP nvp : nvps) {
+	       		freeText.append(nvp.getValue());
+	       	}
+    		lineItem.append(StringEscapeUtils.escapeCsv(freeText.toString()));
     		lineItem.append(DELIMITER);
     		lineItem.append(findOutcomeValue(targetId, outcomes));
     		lineItem.append(NEWLINE);
