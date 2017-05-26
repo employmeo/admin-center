@@ -2,23 +2,28 @@ package com.talytica.admin.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.FormParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.apache.commons.lang3.StringEscapeUtils;
 import com.employmeo.data.model.Benchmark;
 import com.employmeo.data.model.Corefactor;
+import com.employmeo.data.model.Criterion;
 import com.employmeo.data.model.Outcome;
 import com.employmeo.data.model.Respondant;
+import com.employmeo.data.model.RespondantNVP;
 import com.employmeo.data.model.RespondantScore;
+import com.employmeo.data.repository.PredictionTargetRepository;
 import com.employmeo.data.service.AccountService;
 import com.employmeo.data.service.CorefactorService;
 import com.employmeo.data.service.RespondantService;
@@ -35,17 +40,21 @@ public class BenchmarkController {
 	
 	@Autowired
 	RespondantService respondantService;
+
+	@Autowired
+	PredictionTargetRepository predictionTargetRepository;
 	
 	@Autowired
 	CorefactorService corefactorService;
 
 	private static final String FRAGMENT_ROOT = "model/";
-	private static final String MODEL = "answer";
-	private static final String MODEL_DISPLAY = "Answer";
+	private static final String MODEL = "benchmark";
+	private static final String MODEL_DISPLAY = "Benchmark";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
 	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
 	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
 	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
+	private static final Class MODEL_CLASS= Benchmark.class;
 
 	private static final String DELIMITER = ",";
 	private static final String NEWLINE = "\n";
@@ -86,11 +95,12 @@ public class BenchmarkController {
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
         model.addAttribute("item", accountService.getBenchmarkById(id));
+        model.addAttribute("targetList", predictionTargetRepository.findAll());
         return DISPLAY_VIEW;
     }
     
-    @RequestMapping(value = "export/{id}/{targetId}", method = RequestMethod.GET)
-    public void export(@PathVariable Long id, @PathVariable Long targetId, Model model, HttpServletResponse response) throws IOException{
+    @RequestMapping(value = "export/{id}", method = RequestMethod.POST)
+    public void export(@PathVariable Long id, @FormParam("targetId") Long targetId, Model model, HttpServletResponse response) throws IOException{
     	
         String csvFileName = EXPORT_FILENAME;    
         response.setContentType("text/csv");
@@ -106,6 +116,7 @@ public class BenchmarkController {
 
         for (Respondant respondant : respondants) {
 	       	Set<RespondantScore> scores = respondant.getRespondantScores();
+	       	Set<RespondantNVP> nvps = respondantService.getNVPsForRespondant(respondant.getId());
 	       	Set<Outcome> outcomes = respondantService.getOutcomesForRespondant(respondant.getId());
 	       	if (header == null) {
 	       		StringBuffer sbHeader = new StringBuffer();
@@ -116,6 +127,8 @@ public class BenchmarkController {
 	       			sbHeader.append(corefactor.getName());
 	       			headers.add(corefactor.getId());
 	       		}
+        		sbHeader.append(DELIMITER);
+        		sbHeader.append("FREETEXT"); // added this colmnn to slap on all words from NVP free-text.
         		sbHeader.append(DELIMITER);
         		sbHeader.append("OUTCOME");
         		sbHeader.append(NEWLINE);
@@ -129,6 +142,12 @@ public class BenchmarkController {
         		lineItem.append(DELIMITER);
         		lineItem.append(findCorefactorValue(cfid, scores));
 	       	}
+	       	lineItem.append(DELIMITER);
+	       	StringBuffer freeText = new StringBuffer();
+	       	for (RespondantNVP nvp : nvps) {
+	       		freeText.append(nvp.getValue());
+	       	}
+    		lineItem.append(StringEscapeUtils.escapeCsv(freeText.toString()));
     		lineItem.append(DELIMITER);
     		lineItem.append(findOutcomeValue(targetId, outcomes));
     		lineItem.append(NEWLINE);
@@ -152,5 +171,10 @@ public class BenchmarkController {
     		return "0";
     	}
     	return "";
+    }
+    
+    @ModelAttribute("fieldnames")
+    public Field[] getFieldNames() {  	
+        return MODEL_CLASS.getDeclaredFields();
     }
 }

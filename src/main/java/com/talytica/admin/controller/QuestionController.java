@@ -94,6 +94,6 @@ public class QuestionController {
     
     @ModelAttribute("allSurveySections")
     public Iterable<SurveySection> getSurveySections() {
-        return surveyService.getAllSurveySections();
+        return surveyService.getAllSurveySectionsSorted();
     }
 }

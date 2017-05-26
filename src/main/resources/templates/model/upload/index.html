@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${'S3 Media Folders'}"></title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-8"><h3 th:text="${'S3 Media Folders'}"></h3></div>
+			  <div class="col-xs-4"></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div class="alert alert-success alert-dismissible" style="color:green;" role="alert" th:if="${result!=null}">
+  				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  				<span aria-hidden="true">&times;</span></button>
+				<th:block th:text="${'File uploaded to ' + result}"></th:block>
+			</div>
+			<div class="x_content">
+				<div class='col-xs-12 col-md-6'>
+				<form class="form form-horizontal" method="post" action="/admin/upload/media" enctype="multipart/form-data">
+				<label class="control-label">Select file to upload:</label>
+				<input id="uploadfile" style="line-height:initial;height:initial" class="form-control" type="file" name="file"/>
+				<div class="well text-center" id="preview">
+				<i id="icon" class="fa fa-question-circle" style="font-size:96px"></i>
+				<audio controls="controls" id="audio" class="hidden"></audio>
+				<video controls="controls" id="video" class="hidden"></video>
+				<img id="image" class="hidden" style="height:auto;width:100%"></img>
+				<h6 id="filename">Preview</h6>
+				</div>
+				<label class="control-label">Select folder:</label>
+				<select class="form-control" name="folder">
+					<option value="images/questions/">Image Questions</option>
+					<option value="audio/questions/">Audio Questions</option>
+					<option value="images/answers/">Image Answers</option>
+				</select>
+				<hr/>
+				<div class="text-center"><button class="btn btn-primary" type="submit">Upload</button></div>
+				</form>
+				</div>
+				<div class='col-xs-12 col-md-6' th:if="${not #lists.isEmpty(allFolders)}">
+					<table id='listtable' class="table table-striped table-condensed">
+					  <thead>
+						<tr>
+							<th>Folder</th>
+						</tr>
+						</thead><tbody>
+						<tr th:each="item : ${allFolders}">
+							<td><a target="blank" th:text="${item.key}" th:href="${'https://console.aws.amazon.com/s3/buckets/'+item.bucketName+'/'+item.key}">Id</a></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script>
+		   // <![CDATA[
+		  // List of official MIME Types: http://www.iana.org/assignments/media-types/media-types.xhtml
+
+		  
+		  function readURL(input) {
+		    	if (input.files && input.files[0]) {
+		        	var reader = new FileReader();
+		        	reader.onload = function (e) {
+		        		var canPreview = false;
+		        		$('#image').addClass('hidden');
+		        		$('#audio').addClass('hidden');
+		        		$('#video').addClass('hidden');
+		        		$('#icon').addClass('hidden');
+		        		
+						if (input.files[0].type !=null && input.files[0].type.includes("image")) {
+							$('#image').attr('src', e.target.result);
+							$('#image').removeClass('hidden');
+							canPreview = true;
+						}
+						if (input.files[0].type !=null && input.files[0].type.includes("video")) {
+							$('#video').attr('src', e.target.result);
+							$('#video').removeClass('hidden');
+							canPreview = true;
+						}
+						if (input.files[0].type !=null && input.files[0].type.includes("audio")) {
+							$('#audio').attr('src', e.target.result);
+							$('#audio').removeClass('hidden');
+							canPreview = true;
+						}
+						if (!canPreview) {
+							var iconclass;
+							switch (input.files[0].type) {
+								case 'application/pdf':
+									iconclass = 'fa-file-pdf-o';
+									break;
+								case 'text/plain':
+									iconclass = 'fa-file-text-o';
+									break;
+								case 'text/html':
+									iconclass = 'fa-file-code-o';
+									break;
+								case 'application/json':
+									iconclass = 'fa-file-code-o';
+									break;
+								case 'application/gzip':
+								case 'application/zip':
+									iconclass = 'fa-file-archive-o';
+									break;
+								default:
+									iconclass = 'fa-file-o';
+									break;
+							}
+							$('#icon').removeClass();
+							$('#icon').addClass('fa ' + iconclass);
+						}
+		        	}
+					$('#filename').text(input.files[0].name);
+		        	reader.readAsDataURL(input.files[0]);
+				}
+		  	}
+			$(document).ready(function() {
+				$('#listtable').DataTable();
+				$("#uploadfile").change(function() {
+					readURL(this);
+				});
+			});
+
+			// ]]>
+		</script>
+	</div>
+</body>
+</html>

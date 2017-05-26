@@ -24,18 +24,16 @@
 							<th>Description</th>
 							<th>Type</th>
 							<th>Status</th>
-							<th>View</th>
 							<th>Edit</th>
 							<th>Delete</th>
 						</tr>
 						</thead><tbody>
 						<tr th:each="item : ${items}">
 							<td><a th:text="${item.id}" th:href="${'/admin/' + model + '/' + item.id}">Id</a></td>
-							<td th:text="${item.name}">Name</td>
+							<td><a th:text="${item.name}" th:href="${'/admin/' + model + '/' + item.id}">Name</a></td>
 							<td th:utext="${item.description}">Description</td>
 							<td th:text="${item.surveyStatus}">Status</td>
 							<td th:text="${item.surveyStatus}">Type</td>						
-							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
 						</tr>
