@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -23,10 +24,12 @@ import com.employmeo.data.model.Outcome;
 import com.employmeo.data.model.Respondant;
 import com.employmeo.data.model.RespondantNVP;
 import com.employmeo.data.model.RespondantScore;
+import com.employmeo.data.model.Response;
 import com.employmeo.data.repository.PredictionTargetRepository;
 import com.employmeo.data.service.AccountService;
 import com.employmeo.data.service.CorefactorService;
 import com.employmeo.data.service.RespondantService;
+import com.google.common.collect.Lists;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -102,18 +105,21 @@ public class BenchmarkController {
     @RequestMapping(value = "export/{id}", method = RequestMethod.POST)
     public void export(@PathVariable Long id, @FormParam("targetId") Long targetId, Model model, HttpServletResponse response) throws IOException{
     	
-        String csvFileName = EXPORT_FILENAME;    
+        String csvFileName = EXPORT_FILENAME;
         response.setContentType("text/csv");
         String headerKey = "Content-Disposition";
+        Benchmark benchmark = accountService.getBenchmarkById(id);
         String headerValue = String.format("attachment; filename=\"%s\"",
                 csvFileName);
         response.setHeader(headerKey, headerValue);
         PrintWriter fileWriter = response.getWriter();
-        Set<Respondant> respondants = respondantService.getCompletedForBenchmarkId(id);
+        List<Respondant> respondants = Lists.newArrayList(respondantService.getCompletedForBenchmarkId(id));
         log.debug("Found {} respondants", respondants.size());
         String header = null;
         List<Long> headers = new ArrayList<Long>();
 
+        Collections.sort(respondants, (r2,r1) -> Integer.valueOf(r1.getRespondantScores().size()).compareTo(r2.getRespondantScores().size()));
+        
         for (Respondant respondant : respondants) {
 	       	Set<RespondantScore> scores = respondant.getRespondantScores();
 	       	Set<RespondantNVP> nvps = respondantService.getNVPsForRespondant(respondant.getId());
@@ -146,6 +152,10 @@ public class BenchmarkController {
 	       	StringBuffer freeText = new StringBuffer();
 	       	for (RespondantNVP nvp : nvps) {
 	       		freeText.append(nvp.getValue());
+	       	}
+	        Set<Response> responses = respondant.getResponses();
+	       	for (Response resp : responses) {
+	       		if (null != resp.getResponseText()) freeText.append(resp.getResponseText());
 	       	}
     		lineItem.append(StringEscapeUtils.escapeCsv(freeText.toString()));
     		lineItem.append(DELIMITER);
