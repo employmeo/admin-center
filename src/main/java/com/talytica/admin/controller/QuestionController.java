@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.employmeo.data.model.Corefactor;
 import com.employmeo.data.model.Question;
 import com.employmeo.data.model.QuestionType;
+import com.employmeo.data.model.ScoringModelType;
 import com.employmeo.data.model.SurveySection;
 import com.employmeo.data.repository.QuestionTypeRepository;
 import com.employmeo.data.service.CorefactorService;
@@ -90,6 +91,11 @@ public class QuestionController {
     @ModelAttribute("allTypes")
     public Iterable<QuestionType> populateTypes() {
         return questionTypeRepository.findAll();
+    }
+    
+    @ModelAttribute("allScoringModels")
+    public ScoringModelType[] scoringModelTypes() {
+        return ScoringModelType.values();
     }
     
     @ModelAttribute("allSurveySections")

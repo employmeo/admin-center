@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/index-layout">
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
 <head lang="en">
 <title>Talytica Admin Dashboard</title>
 </head>
@@ -13,7 +14,67 @@
 			</div>
 			<div class="col-md-9 col-sm-9 col-xs-12 pull-right"></div>
 		</div>
-
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<h3>Server Status</h3>
+						</div>
+						<div class="col-md-9 col-sm-9 col-xs-12 ">
+							<span class="pull-right text-success" th:text="${message}"></span>
+						</div>
+					<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<table style="width: 100%;">
+							<thead>
+								<tr>
+									<th>Server</th>
+									<th>Indicator</th>
+									<th>Status</th>
+									<th>Clear Cache</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Portal</td>
+									<td class='lead'><i th:if="${item.portal}"
+										class='fa fa-check-circle text-success'></i> <i
+										th:unless="${item.portal}"
+										class='fa fa-exclamation-circle text-danger'></i></td>
+									<td th:text="${item.portalStatus}"></td>
+									<td><p class='btn btn-default'>
+											<i class='fa fa-times-circle'></i>
+										</p></td>
+								</tr>
+								<tr>
+									<td>Assessment</td>
+									<td class='lead'><i th:if="${item.survey}"
+										class='fa fa-check-circle text-success'></i> <i
+										th:unless="${item.survey}"
+										class='fa fa-exclamation-circle text-danger'></i></td>
+									<td th:text="${item.surveyStatus}"></td>
+									<td><a class='btn btn-default'
+										href='/admin/index/reset/survey'><i class='fa fa-refresh'></i></a></td>
+								</tr>
+								<tr>
+									<td>Integration</td>
+									<td class='lead'><i th:if="${item.integration}"
+										class='fa fa-check-circle text-success'></i> <i
+										th:unless="${item.integrationStatus}"
+										class='fa fa-exclamation-circle text-danger'></i></td>
+									<td th:text="${item.integrationStatus}"></td>
+									<td><a class='btn btn-default'
+										href='/admin/index/reset/integration'><i
+											class='fa fa-refresh'></i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="clearfix"></div>
 	</div>
 </body>
