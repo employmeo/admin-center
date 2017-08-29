@@ -47,7 +47,7 @@ public class PositionController {
     public String create(Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	model.addAttribute("item", new Criterion());
+    	model.addAttribute("item", new Position());
     	return EDIT_VIEW;
     }
     
