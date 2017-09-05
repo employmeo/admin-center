@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay} "></title>
+</head>
+<body>
+	<div layout:fragment="content">
+			<div th:if="${item.stripeId == null}">
+				<div class="x_panel">
+					<div class="x_title">
+					    <h3>Stripe Settings</h3>
+	        	    	<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<span th:text="${item.accountName + ' not connected to Stripe'}"></span>
+						<a class='btn btn-default' th:href="${'/admin/account/' + item.id + '/stripe'}" >Add to Stripe</a>
+					</div>
+				</div>
+			</div>
+			<div th:unless="${item.stripeId == null}">
+				<script src="https://js.stripe.com/v3/"></script>
+				<script th:inline="javascript">
+					var apikey = /*[[${stripePK}]]*/ 'pk_test_invalidkey';
+					var stripe = Stripe(apikey);
+				</script> 
+				<div class="col-xs-6">
+					<div class="x_panel">
+						<div class="x_title">
+						    <h3>Payment Info</h3>
+	            			<div class="clearfix"></div>
+						</div>
+						<div class="x_content text-center" th:if="${customer.sources.totalCount == 0}">
+						<h2 class="text-danger">Account Has No Credit Card on File</h2>
+							<form th:action="${'/admin/account/' + item.id + '/addcard'}"  method="POST">
+							  	<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+							    	th:attr="data-key=${stripePK},data-email=${customer.email}"
+								    data-name="Talytica"
+								    data-zip-code="true"
+								    data-label="Add Credit Card"
+								    data-panel-label="Save Payment Info"
+								    data-allow-remember-me="false"
+								    data-image="/images/favicon-32x32.png"
+								    data-locale="auto">
+								</script>
+							</form>
+						</div>
+						<div class="x_content" th:unless="${customer.sources.totalCount == 0}">
+						<table id='cardslist' class="table table-striped table-condensed">
+							  <thead>
+								<tr>
+									<th>Type</th>
+									<th>Exipration</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr th:each="source : ${customer.sources.data}" th:if="${source.type} == 'card'">
+										<td th:text="${source.typeData.brand}"></td>
+										<td th:text="${source.typeData.exp_month} + '/' + ${source.typeData.exp_year}">Expiration</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="x_panel">
+						<div class="x_title">
+						    <h3>Subscriptions</h3>
+	            			<div class="clearfix"></div>
+						</div>
+						<div class="x_content" th:unless="${#lists.isEmpty(plans)}">
+						<span>Account is subscribed to below plans</span>
+							<table id='planlist' class="table table-striped table-condensed">
+							  <thead>
+								<tr>
+									<th>Plan</th>
+									<th>Name</th>
+									<th>Amount</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr th:each="plan : ${plans}">
+										<td th:text="${plan.id}">ID</td>
+										<td th:text="${plan.name}">Desc</td>
+										<td th:text="${plan.amount}">Amt</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="x_content text-center" th:if="${#lists.isEmpty(plans)}">
+						<h2 class="text-danger text-center">Account has no associated Plan</h2>
+						<span class="text-primary">Please choose a plan to create a subscription</span>
+						<form th:action="${'/admin/account/' + item.id + '/subscribe'}"  method="POST">
+							<table id='planlist' class="table table-striped table-condensed text-left">
+							  <thead>
+								<tr>
+									<th>Select</th>
+									<th>Plan</th>
+									<th>Name</th>
+									<th>Amount</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr th:each="plan : ${allplans}">
+										<td><input type="radio" name="planId" th:value="${plan.id}" required="true"></input></td>
+										<td th:text="${plan.id}">ID</td>
+										<td th:text="${plan.name}">Desc</td>
+										<td th:text="${plan.amount}">Amt</td>
+									</tr>
+								</tbody>							
+							</table>
+							<button class='btn btn-default' type="submit" >Subscribe</button>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
