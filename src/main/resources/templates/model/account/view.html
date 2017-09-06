@@ -10,28 +10,16 @@
 	<div layout:fragment="content">
 		<div class="x_panel">
 			<div class="x_title">
-				<div class="col-xs-6"><h3 th:text="${modelDisplay}"></h3></div>
-				<div class="col-xs-6">
+				<div class="col-xs-6"><h3 th:text="${modelDisplay + ' : ' + item.accountName}"></h3></div>
+				<div class="col-xs-3"><a class='btn btn-default' th:href="${'/admin/account/' + item.id + '/stripe'}">Stripe Settings</a></div>
+				<div class="col-xs-3">
 					<ul class="nav navbar-right panel_toolbox">
-		                   <li><a th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i></a></li>
-		                   <li><a th:href="${'/admin/' + model + '/edit/' + item.id}"><i class="fa fa-edit"></i></a></li>
-		                   <li><a th:href="${'/admin/' + model}" ><i class="fa fa-backward"></i></a></li>
-		               </ul>
+			            <li><a th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i></a></li>
+			            <li><a th:href="${'/admin/' + model + '/edit/' + item.id}"><i class="fa fa-edit"></i></a></li>
+			            <li><a th:href="${'/admin/' + model}" ><i class="fa fa-backward"></i></a></li>
+		            </ul>
 				</div>
 	            <div class="clearfix"></div>
-			</div>
-			<div class='alert alert-danger' th:if="${item.stripeId == null}">
-				<h5 class="text-danger" th:text="${item.accountName + ' not connected to Stripe'}"></h5>
-				<form method='post' th:action="${'/admin/account/' + item.id + '/stripe'}">
-					<button type="submit" class='btn btn-default'>Add to Stripe</button>
-				</form>
-			</div>
-			<div class='alert alert-success' th:unless="${item.stripeId == null}">
-				<h5 class="text-success" th:text="${item.accountName + ' is connected to Stripe'}"></h5>
-				<ul>
-					<li><a th:href="${'/admin/account/' + item.id + '/stripe'}">View Subscription Details</a></li>
-					<li><a target='blank' th:text="${'View ' + item.accountName + ' in Stripe'}" th:href="${customer.metadata.link}">view in stripe</a></li>
-				</ul>
 			</div>
 			<div th:replace="fragments/view-item :: view-item"></div>
 		</div>

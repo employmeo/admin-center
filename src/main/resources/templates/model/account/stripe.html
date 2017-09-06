@@ -11,12 +11,23 @@
 			<div th:if="${item.stripeId == null}">
 				<div class="x_panel">
 					<div class="x_title">
-					    <h3>Stripe Settings</h3>
+					    <h3 class="text-danger">Stripe Not Connected</h3>
 	        	    	<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<span th:text="${item.accountName + ' not connected to Stripe'}"></span>
-						<a class='btn btn-default' th:href="${'/admin/account/' + item.id + '/stripe'}" >Add to Stripe</a>
+						<form method='post' class="form form-horizontal" th:action="${'/admin/account/' + item.id + '/stripe'}">
+							<div class="form-control-group col-xs-12 text-center">
+								<span class="text-info" th:text="${'To connect ' + item.accountName + ' to stripe, select user and click Connect'}"></span>
+							</div>
+							<label class="control-label col-xs-12 col-sm-3">Select (Billing) User:</label>
+							<div class="col-xs-12 col-sm-9"><select class="form-control" name="userId">
+								<option th:each="user : ${users}" th:text="${user.email}" th:value="${user.id}"></option>
+							</select></div>
+							<div class="form-control-group col-xs-12 text-center">
+								<hr/>
+								<button type="submit" class='btn btn-primary'>Connect</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -26,7 +37,22 @@
 					var apikey = /*[[${stripePK}]]*/ 'pk_test_invalidkey';
 					var stripe = Stripe(apikey);
 				</script> 
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-sm-4">
+					<div class="x_panel">
+						<div class="x_title">
+						    <h3 class="text-danger">Stripe Settings</h3>
+		        	    	<div class="clearfix"></div>
+						</div>
+						<div class="x_content">
+							<h5 class="text-success" th:text="${item.accountName + ' is connected to Stripe'}"></h5>
+							<a target='blank' th:text="${'View ' + item.accountName + ' in Stripe'}" th:href="${customer.metadata.link}">View in Stripe</a>
+							<div class="hidden">
+								<pre th:text="${customer}"></pre>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
 					<div class="x_panel">
 						<div class="x_title">
 						    <h3>Payment Info</h3>
@@ -65,7 +91,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-sm-4">
 					<div class="x_panel">
 						<div class="x_title">
 						    <h3>Subscriptions</h3>

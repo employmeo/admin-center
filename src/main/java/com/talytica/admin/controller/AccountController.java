@@ -1,6 +1,7 @@
 package com.talytica.admin.controller;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.employmeo.data.model.Account;
+import com.employmeo.data.model.User;
 import com.employmeo.data.service.AccountService;
+import com.employmeo.data.service.UserService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Card;
 import com.stripe.model.Customer;
@@ -30,6 +33,8 @@ public class AccountController {
 
 	@Autowired
 	AccountService accountService;
+	@Autowired
+	UserService userService;
 	@Autowired
 	BillingService billingService;
 	
@@ -92,12 +97,13 @@ public class AccountController {
     }
     
     @RequestMapping(value = "{id}/stripe", method = RequestMethod.POST)
-    public String insertInStripe(@PathVariable Long id, Model model) throws Exception {
+    public String insertInStripe(@PathVariable Long id, @FormParam(value="userId") Long userId, Model model) throws Exception {
     	Account account = accountService.getAccountById(id);
+    	User user = userService.getUserById(userId);
     	Customer customer = null;
 		try {
 	    	if ((account.getStripeId() == null) || (account.getStripeId().isEmpty())) {
-		        	customer = billingService.createCustomerFor(account);
+		        	customer = billingService.createCustomerFor(account, user);
 		        	account.setStripeId(customer.getId());
 		        	accountService.save(account);
 	        } else {
@@ -169,8 +175,12 @@ public class AccountController {
     }
 
     @ModelAttribute("allplans")
-    public List<Plan> getAllPlans() throws Exception {  	
-        return billingService.getAllPlans();
+    public List<Plan> getAllPlans() {
+    	try {
+    		return billingService.getAllPlans();
+    	} catch (Exception e) {
+    		return new ArrayList<Plan>();
+    	}
     }
     
     @ModelAttribute("stripePK")

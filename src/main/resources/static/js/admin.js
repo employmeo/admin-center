@@ -28,7 +28,23 @@ function readyNav() {
     var sidebar = $('#sidebar-menu');
     var sidebar_footer = $('.sidebar-footer');
     var URL = window.location;
-    
+
+    sidebar.find('ul.nav.child_menu').each( function() {
+    	var items = $(this).find('a'); 
+    	var active = false;
+    	for (var i=0;i<items.size();i++) {
+    		item = items[i];
+        	var location = window.location.pathname;
+    	    var link = $(item).attr('href');
+    	    if (!link) return;
+    	    if (link == location) {
+    	    	$(item).parent().addClass('current-page');
+    	    	active = true;
+    	    }
+    	}
+    	if (!active) $(this).slideUp();
+    });
+
     menutoggle.on('click', function() {
 
 	    if (body.hasClass('nav-md')) {
@@ -51,9 +67,9 @@ function readyNav() {
     sidebar.find('li').removeClass('active');
     sidebar.find('li').on('click', function(ev) {
 	    var link = $('a', this).attr('href');
-	    	// prevent event bubbling on parent menu
+    	// prevent event bubbling on parent menu
 	    if (link) {
-	    	ev.stopPropagation();
+	    	ev.stopPropagation(); // do nothing: we're going to another page
     	} else {
     		if ($(this).is('.active')) {
     			$(this).removeClass('active');
