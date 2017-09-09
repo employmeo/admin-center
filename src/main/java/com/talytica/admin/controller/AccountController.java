@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +24,11 @@ import com.employmeo.data.service.UserService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Card;
 import com.stripe.model.Customer;
+import com.stripe.model.Invoice;
 import com.stripe.model.Plan;
 import com.stripe.model.Source;
 import com.talytica.common.service.BillingService;
+import com.talytica.common.service.EmailService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,13 +36,15 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin/account")
 public class AccountController {
-
+	
 	@Autowired
 	AccountService accountService;
 	@Autowired
 	UserService userService;
 	@Autowired
 	BillingService billingService;
+	@Autowired
+	EmailService emailService;
 	
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "account";
@@ -81,44 +89,11 @@ public class AccountController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, Model model) {
     	Account account = accountService.getAccountById(id);
-        try {
-	    	if ((account.getStripeId() != null) && (!account.getStripeId().isEmpty())) {
-	    		Customer customer = billingService.getCustomer(account.getStripeId());
-	    		model.addAttribute("customer", customer);	
-	    	}
-        } catch (StripeException se) {
-        	log.error("Failed to get Stripe data this account", se);
-        }
         model.addAttribute("users", accountService.getUsersForAccount(id));
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
     	model.addAttribute("item", account);
         return DISPLAY_VIEW;
-    }
-    
-    @RequestMapping(value = "{id}/stripe", method = RequestMethod.POST)
-    public String insertInStripe(@PathVariable Long id, @FormParam(value="userId") Long userId, Model model) throws Exception {
-    	Account account = accountService.getAccountById(id);
-    	User user = userService.getUserById(userId);
-    	Customer customer = null;
-		try {
-	    	if ((account.getStripeId() == null) || (account.getStripeId().isEmpty())) {
-		        	customer = billingService.createCustomerFor(account, user);
-		        	account.setStripeId(customer.getId());
-		        	accountService.save(account);
-	        } else {
-	        	customer = billingService.getCustomer(account.getStripeId());
-	        	model.addAttribute("plans", billingService.getCustomerPlans(account.getStripeId()));
-	        }
-	    	model.addAttribute("customer", customer);
-        } catch (StripeException se) {
-        	log.error("Failed to get link this account to stripe", se);
-        }    
-    	model.addAttribute("model", MODEL);
-    	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", account);
-        model.addAttribute("users", accountService.getUsersForAccount(id));
-        return STRIPE_VIEW;  
     }
     
     @RequestMapping(value = "{id}/stripe", method = RequestMethod.GET)
@@ -127,7 +102,10 @@ public class AccountController {
 		try {
 			Customer customer = billingService.getCustomer(account.getStripeId());
 	    	model.addAttribute("customer", customer);
+        	model.addAttribute("dashlink", billingService.getDashboardPrefix(customer));
         	model.addAttribute("plans", billingService.getCustomerPlans(account.getStripeId()));
+        	model.addAttribute("upcomingInvoice",billingService.getCustomerNextInvoice(account.getStripeId()));
+        	model.addAttribute("invoices",billingService.getCustomerInvoices(account.getStripeId()));
         	log.debug("Stripe customer details:", customer);
         } catch (StripeException se) {
         	log.error("Failed to get {} details from stripe",account.getAccountName(), se);
@@ -139,6 +117,23 @@ public class AccountController {
         return STRIPE_VIEW;  
     }
 
+    @RequestMapping(value = "{id}/stripe", method = RequestMethod.POST)
+    public String insertInStripe(@PathVariable Long id, @FormParam(value="userId") Long userId, Model model) throws Exception {
+    	Account account = accountService.getAccountById(id);
+    	User user = userService.getUserById(userId);
+    	Customer customer = null;
+    	if ((account.getStripeId() == null) || (account.getStripeId().isEmpty())) {
+    		try {
+	        	customer = billingService.createCustomerFor(account, user);
+	        	account.setStripeId(customer.getId());
+	        	accountService.save(account);
+            } catch (StripeException se) {
+            	log.error("Failed to get link this account to stripe", se);
+            }    
+        }
+        return getStripe(id, model);
+    }
+    
     @RequestMapping(value = "{id}/subscribe", method = RequestMethod.POST)
     public String subscribeTo(@PathVariable Long id, @FormParam(value="planId") String planId, Model model) {
     	Account account = accountService.getAccountById(id);
@@ -146,13 +141,27 @@ public class AccountController {
 	    	if ((account.getStripeId() != null) && (!account.getStripeId().isEmpty())) {
 	    		Customer customer = billingService.getStripeCustomer(account);
 	    		billingService.subscribeCustomerToPlan(customer, planId);
-	    		model.addAttribute("plans", billingService.getCustomerPlans(account.getStripeId()));
 	    	}
         } catch (StripeException se) {
         	log.error("Failed to get subscribe account {} to {}", id, planId, se);
         }
         
         return getStripe(id, model);
+    }
+
+    @RequestMapping(value = "{id}/previewinvoice", method = RequestMethod.POST)
+    public String sendPreview(@PathVariable Long id, Model model) {
+    	Account account = accountService.getAccountById(id);
+    	UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	String email = user.getUsername();
+		try {
+			Invoice invoice = billingService.getCustomerNextInvoice(account.getStripeId());
+			emailService.sendInvoice(account, invoice, email);
+        } catch (StripeException se) {
+        	log.error("Failed to get {} details from stripe",account.getAccountName(), se);
+        }
+
+        return getStripe(id, model);  
     }
 
     @RequestMapping(value = "{id}/addcard", method = RequestMethod.POST) 

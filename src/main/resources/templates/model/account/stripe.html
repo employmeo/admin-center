@@ -37,22 +37,60 @@
 					var apikey = /*[[${stripePK}]]*/ 'pk_test_invalidkey';
 					var stripe = Stripe(apikey);
 				</script> 
-				<div class="col-xs-12 col-sm-4">
+				<div class="col-xs-12 col-sm-12">
 					<div class="x_panel">
 						<div class="x_title">
-						    <h3 class="text-danger">Stripe Settings</h3>
+						    <h3 class="text-primary">Stripe Settings<a class="collapse-link pull-right small"><i class="fa fa-chevron-down"></i></a></h3>
+							<h5 class="text-success">Account Connected - <a target='blank' th:text="${'View ' + item.accountName + ' in Stripe'}" th:href="${dashlink + 'customers/' + customer.id}">View in Stripe</a></h5>
 		        	    	<div class="clearfix"></div>
 						</div>
+						<div class="x_content" style="display:none;"><pre th:text="${customer}"></pre></div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12">
+					<div class="x_panel">
+						<div class="x_title">
+						    <h3>Invoices</h3>
+	            			<div class="clearfix"></div>
+						</div>
 						<div class="x_content">
-							<h5 class="text-success" th:text="${item.accountName + ' is connected to Stripe'}"></h5>
-							<a target='blank' th:text="${'View ' + item.accountName + ' in Stripe'}" th:href="${customer.metadata.link}">View in Stripe</a>
-							<div class="hidden">
-								<pre th:text="${customer}"></pre>
+							<div th:if="${#lists.isEmpty(invoices) and !upcomingInvoice}"></div>
+							<div th:unless="${#lists.isEmpty(invoices) and !upcomingInvoice}">
+								<h2>Invoices</h2>
+								<table id='invoicelist' class="table table-striped table-condensed">
+								  <thead>
+									<tr>
+										<th>Date</th>
+										<th>Period</th>
+										<th>Total</th>
+										<th>Amount Due</th>
+										<th>Paid</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:each="invoice : ${invoices}">
+											<td><a target="blank" th:text="${#dates.format(new java.util.Date(1000*invoice.date),'MMM dd, YYYY')}" th:href="${dashlink + 'invoices/' + invoice.id}"></a></td>
+											<td th:text="${#dates.format(new java.util.Date(1000*invoice.periodStart),'MMM dd')} + ' to ' + ${#dates.format(new java.util.Date(1000*invoice.periodEnd),'MMM dd')}">Amount</td>
+											<td th:text="'$ ' + ${invoice.total/100}">Total</td>
+											<td th:text="'$ ' + ${invoice.amountDue/100}">Amount</td>
+											<td><i th:if="${invoice.closed}" class="fa fa-thumbs-up"></i><i th:unless="${invoice.closed}" class="fa fa-thumbs-down"></i></td>
+										</tr>
+										<tr th:if="${upcomingInvoice}">
+											<td><a target="blank" th:text="'UPCOMING: '+ ${#dates.format(new java.util.Date(1000*upcomingInvoice.date),'MMM dd, YYYY')}" th:href="${dashlink + 'customers/' + customer.id + '/upcoming_invoice'}"></a></td>
+											<td th:text="${#dates.format(new java.util.Date(1000*upcomingInvoice.periodStart),'MMM dd')} + ' to ' + ${#dates.format(new java.util.Date(1000*upcomingInvoice.periodEnd),'MMM dd')}">Amount</td>
+											<td th:text="'$ ' + ${upcomingInvoice.total/100}">Total</td>
+											<td th:text="'$ ' + ${upcomingInvoice.amountDue/100}">Amount</td>
+											<td><form th:action="${'/admin/account/' + item.id + '/previewinvoice'}" method='POST'>
+												<button class='btn btn-primary btn-xs'>Preview</button></form></td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="hidden"><pre th:if="${upcomingInvoice}" th:text="${upcomingInvoice}"></pre><pre th:each="invoice : ${invoices}" th:text="${invoice}"></pre></div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-xs-12 col-sm-4">
+				</div>						
+				<div class="col-xs-12 col-sm-6">
 					<div class="x_panel">
 						<div class="x_title">
 						    <h3>Payment Info</h3>
@@ -78,7 +116,7 @@
 							  <thead>
 								<tr>
 									<th>Type</th>
-									<th>Exipration</th>
+									<th>Expiration</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -91,7 +129,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-4">
+				<div class="col-xs-12 col-sm-6">
 					<div class="x_panel">
 						<div class="x_title">
 						    <h3>Subscriptions</h3>
@@ -109,7 +147,7 @@
 								</thead>
 								<tbody>
 									<tr th:each="plan : ${plans}">
-										<td th:text="${plan.id}">ID</td>
+										<td><a target="blank" th:text="${plan.id}" th:href="${dashlink + 'plans/' + plan.id}"></a></td>
 										<td th:text="${plan.name}">Desc</td>
 										<td th:text="${plan.amount}">Amt</td>
 									</tr>
@@ -132,7 +170,7 @@
 								<tbody>
 									<tr th:each="plan : ${allplans}">
 										<td><input type="radio" name="planId" th:value="${plan.id}" required="true"></input></td>
-										<td th:text="${plan.id}">ID</td>
+										<td><a target="blank" th:text="${plan.id}" th:href="${dashlink + 'plans/' + plan.id}"></a></td>
 										<td th:text="${plan.name}">Desc</td>
 										<td th:text="${plan.amount}">Amt</td>
 									</tr>
