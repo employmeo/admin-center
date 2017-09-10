@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
@@ -27,6 +28,7 @@ import com.stripe.model.Customer;
 import com.stripe.model.Invoice;
 import com.stripe.model.Plan;
 import com.stripe.model.Source;
+import com.stripe.model.Subscription;
 import com.talytica.common.service.BillingService;
 import com.talytica.common.service.EmailService;
 
@@ -99,21 +101,32 @@ public class AccountController {
     @RequestMapping(value = "{id}/stripe", method = RequestMethod.GET)
     public String getStripe(@PathVariable Long id, Model model) {
     	Account account = accountService.getAccountById(id);
-		try {
-			Customer customer = billingService.getCustomer(account.getStripeId());
-	    	model.addAttribute("customer", customer);
-        	model.addAttribute("dashlink", billingService.getDashboardPrefix(customer));
-        	model.addAttribute("plans", billingService.getCustomerPlans(account.getStripeId()));
-        	model.addAttribute("upcomingInvoice",billingService.getCustomerNextInvoice(account.getStripeId()));
-        	model.addAttribute("invoices",billingService.getCustomerInvoices(account.getStripeId()));
-        	log.debug("Stripe customer details:", customer);
-        } catch (StripeException se) {
-        	log.error("Failed to get {} details from stripe",account.getAccountName(), se);
-        }
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
         model.addAttribute("item", account);
         model.addAttribute("users", accountService.getUsersForAccount(id));
+    	if (null == account.getStripeId()) {
+    		return STRIPE_VIEW;
+    	}
+		try {
+			Customer customer = billingService.getCustomer(account.getStripeId());
+	    	model.addAttribute("customer", customer);
+        	model.addAttribute("dashlink", billingService.getDashboardPrefix(customer));
+    		Subscription subscription = null;
+    		for (Subscription sub : customer.getSubscriptions().getData()) {
+    			if (billingService.getActiveSubscriptionStatuses().contains(sub.getStatus())) {
+    				subscription = sub;
+    			}
+    		}
+        	if (subscription != null) {
+        		model.addAttribute("subscription", subscription);
+	        	model.addAttribute("upcomingInvoice",billingService.getCustomerNextInvoice(account.getStripeId()));
+	        	model.addAttribute("invoices",billingService.getCustomerInvoices(account.getStripeId()));
+        	}
+        	log.debug("Stripe customer details:", customer);
+        } catch (StripeException se) {
+        	log.error("Failed to get {} details from stripe",account.getAccountName(), se);
+        }
         return STRIPE_VIEW;  
     }
 
@@ -135,12 +148,16 @@ public class AccountController {
     }
     
     @RequestMapping(value = "{id}/subscribe", method = RequestMethod.POST)
-    public String subscribeTo(@PathVariable Long id, @FormParam(value="planId") String planId, Model model) {
+    public String subscribeTo(@PathVariable Long id,
+    						  @FormParam(value="planId") String planId,
+    						  @FormParam(value="quantity") Integer quantity, 
+    						  @FormParam(value="trialPeriod") Integer trialPeriod, 
+    						  Model model) {
     	Account account = accountService.getAccountById(id);
         try {
 	    	if ((account.getStripeId() != null) && (!account.getStripeId().isEmpty())) {
 	    		Customer customer = billingService.getStripeCustomer(account);
-	    		billingService.subscribeCustomerToPlan(customer, planId);
+	    		billingService.subscribeCustomerToPlan(account.getStripeId(), planId, quantity, trialPeriod);
 	    	}
         } catch (StripeException se) {
         	log.error("Failed to get subscribe account {} to {}", id, planId, se);
