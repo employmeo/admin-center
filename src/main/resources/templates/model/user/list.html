@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-6"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>
+			  <div class="col-xs-6"><a class="pull-right" th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i> Create</a></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div th:replace="fragments/list-item :: list-item"></div>
+		</div>
+		<script>
+			var qTable;
+			$(document).ready(function() {
+			    qTable = $('#listtable').DataTable();
+			});
+		</script>
+	</div>
+</body>
+</html>
