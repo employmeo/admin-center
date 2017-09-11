@@ -37,7 +37,7 @@ function readyNav() {
         	var location = window.location.pathname;
     	    var link = $(item).attr('href');
     	    if (!link) return;
-    	    if (link == location) {
+    	    if (location.indexOf(link) >= 0) {
     	    	$(item).parent().addClass('current-page');
     	    	active = true;
     	    }
