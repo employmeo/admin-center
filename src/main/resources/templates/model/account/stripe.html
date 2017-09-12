@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div th:if="${item.stripeId == null}">
+		<div th:unless="${customer}">
 			<div class="x_panel">
 				<div class="x_title">
 					<h3 class="text-danger">Stripe Not Connected</h3>
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 		</div>
-		<div th:unless="${item.stripeId == null}">
+		<div th:if="${customer}">
 			<script src="https://js.stripe.com/v3/"></script>
 			<script th:inline="javascript">
 				var apikey = /*[[${stripePK}]]*/'pk_test_invalidkey';
