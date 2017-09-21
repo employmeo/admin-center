@@ -22,7 +22,6 @@
 							<h3>Server Status</h3>
 						</div>
 						<div class="col-md-9 col-sm-9 col-xs-12 ">
-							<span class="pull-right text-success" th:text="${message}"></span>
 						</div>
 					<div class="clearfix"></div>
 					</div>
@@ -71,6 +70,36 @@
 								</tr>
 							</tbody>
 						</table>
+					</div>
+				</div>
+				<div class="x_panel">
+					<div class="x_title">
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<h3>Pipeline Triggers</h3>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<form action='/admin/index/trigger' method='post' class='form'>
+							<label for='triggerprescreen' class='control-label col-xs-2'>
+								<input type='radio' name='action' id='triggerprescreen' value='prescreen' /> PreScreen
+							</label>
+							<label for='triggerscoring' class='control-label col-xs-2'>
+								<input type='radio' name='action' id='triggerscoring' value='scoring' /> Scoring
+							</label>
+							<label for='triggergrading' class='control-label col-xs-2'>
+								<input type='radio' name='action' id='triggergrading' value='grading' /> Grading
+							</label>
+							<label for='triggerpredictions' class='control-label col-xs-2'>
+								<input type='radio' name='action' id='triggerpredictions' value='predictions' /> Predictions
+							</label>
+							<label for='triggerall' class='col-xs-2 control-label'>
+							  <input type='radio' name='action' id='triggerall' value='all' /> All
+							</label>
+							<div class='col-xs-2'>
+								<button type='submit' class='btn btn-xs btn-primary'>Trigger</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>

@@ -20,7 +20,11 @@
       	<th:block th:include="fragments/nav1 :: topnav"></th:block>
       </div>
       <!-- /top navigation -->
-       <div class="right_col" role="main" id="mainpanel" layout:fragment="content"></div>
+       <div class="right_col" role="main" id="mainpanel">
+      	 <th:block th:include="fragments/nav1 :: alert"></th:block>
+         <div layout:fragment="content"></div>
+		 <div class="clearfix"></div>
+       </div>
      </div>
   </div>	
 	
