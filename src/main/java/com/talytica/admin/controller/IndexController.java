@@ -1,5 +1,7 @@
 package com.talytica.admin.controller;
 
+import javax.ws.rs.FormParam;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,10 +42,17 @@ public class IndexController {
     }
     
     @RequestMapping("/admin/index/reset/{serverName}")
-    public String  clearcaches(Model model, @PathVariable String serverName){
+    public String clearcaches(Model model, @PathVariable String serverName){
 
     	serverAdminService.clearRemoteCache(serverName);
     	model.addAttribute("message", serverName + " server(s) cache cleared" );
+        return index(model);
+    }
+
+    @RequestMapping("/admin/index/trigger")
+    public String trigger(Model model, @FormParam(value="action") String action){
+    	serverAdminService.triggerPipeline(action);
+    	model.addAttribute("message", action + " pipeline process(es) triggered" );
         return index(model);
     }
     

@@ -15,8 +15,6 @@
 	href="https://fonts.googleapis.com/css?family=Roboto" />
 <link rel="stylesheet" type='text/css'
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
-<link rel="stylesheet" type='text/css'
-	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap-theme.min.css" />
 <link rel='stylesheet' type='text/css'
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link rel="stylesheet" type="text/css"
@@ -103,9 +101,13 @@
 								</li>
 								<li><a href="/admin/accountsurvey"><i class="fa fa-clipboard"></i>Account Surveys</a>
 								</li>
+								<li><a href="/admin/evalconfig"><i class="fa fa-briefcase"></i>Eval Configuration</a>
+								</li>
 								<li><a href="/admin/location"><i class="fa fa-home"></i>Locations</a>
 								</li>
 								<li><a href="/admin/position"><i class="fa fa-briefcase"></i>Positions</a>
+								</li>
+								<li><a href="/admin/workflow"><i class="fa fa-briefcase"></i>Custom Workflows</a>
 								</li>
 								<li><a href="/admin/positionconfig"><i class="fa fa-wrench"></i>PredictionConfig</a>
 								</li>
@@ -152,10 +154,15 @@
 
 	</div>
 
-	<div th:fragment="footer">
-		<h2>Footer</h2>
+	<div th:fragment="alert">
+		<div th:if="${message}" class="row"><div class="col-xs-12">
+			<div class="alert alert-info alert-dismissible" role="alert">
+  				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  				<span aria-hidden="true">&times;</span></button>
+				<th:block th:text="${message}"></th:block>
+			</div>
+		</div></div>
 	</div>
-
 
 	<div th:fragment="footer">
 		<h2>Footer</h2>
