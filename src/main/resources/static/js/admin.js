@@ -21,6 +21,14 @@ function logout() {
 	postLogout();
 }
 
+function validate() {
+	$('#edititemform :input').each(function () {
+		if (!$(this).val()) {
+			$(this).prop('disabled', true);
+		}
+	});
+}
+
 function readyNav() {
     var menutoggle = $('#menu_toggle');
     var body = $('body');

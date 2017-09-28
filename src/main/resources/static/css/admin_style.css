@@ -68,7 +68,14 @@ audio {
 	vertical-align: middle;
 }
 
+.smbottom {
+	margin-bottom: 1px;
+}
 
+.compressed {
+	max-height: 62px;
+	overflow-y: auto;
+}
 
 .selected {
     background-color: #eee;
