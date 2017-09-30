@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/admin/accountsurvey")
+@RequestMapping("/admin/asurvey")
 public class AccountSurveyController {
 
 	@Autowired
@@ -27,12 +27,12 @@ public class AccountSurveyController {
 	AccountSurveyService accountSurveyService;
 
 	private static final String FRAGMENT_ROOT = "model/";
-	private static final String MODEL = "accountsurvey";
+	private static final String MODEL = "asurvey";
 	private static final String MODEL_DISPLAY = "Account Survey";
-	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
+	private static final String LIST_VIEW = FRAGMENT_ROOT + "generic/list";
 	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
-	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
-	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
+	private static final String EDIT_VIEW = FRAGMENT_ROOT + "generic/edit";
+	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + "generic/view";
 	private static final Class MODEL_CLASS= AccountSurvey.class;
 
     @RequestMapping(value = {"","/list"}, method = RequestMethod.GET)

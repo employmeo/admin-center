@@ -15,7 +15,7 @@
 						<tbody>
 						<tr th:each="item : ${items}">
 							<td><a th:href="${'/admin/' + model + '/' + item.id}">View</a></td>
-							<td th:each="field : ${fieldnames}" th:component="${field}" th:if="${#strings.indexOf(field.type,'class java')} == 0" th:text="${item.__${field.name}__}"></td>						
+							<td th:each="field : ${fieldnames}" th:component="${field}" th:if="${#strings.indexOf(field.type,'class java')} == 0"><div class='compressed' th:text="${item.__${field.name}__}"></div></td>						
 							<td><a th:href="${'/admin/' + model + '/edit/' + item.id}">Edit</a></td>
 							<td><a th:href="${'/admin/' + model + '/delete/' + item.id}">Delete</a></td>
 						</tr>

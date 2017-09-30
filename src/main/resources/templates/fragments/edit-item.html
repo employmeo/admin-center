@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="edit-item" class="x_content">
-			<form class="form-horizontal" th:object="${item}" th:action="${'/admin/' + model + '/save'}" method="post">
+			<form id="edititemform" class="form-horizontal" th:object="${item}" th:action="${'/admin/' + model + '/save'}" onSubmit="validate()" method="post">
 
-				<div th:each="field : ${fieldnames}" th:component="${field}" th:if="${#strings.indexOf(field.type,'class java.lang')} == 0" class="form-group">
+				<div th:each="field : ${fieldnames}" th:component="${field}" th:if="${#strings.indexOf(field.type,'class java.lang')} == 0" class="form-group smbottom">
 					<label th:text="${field.name}" class="col-sm-2 control-label">Label</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" th:field="*{__${field.name}__}" />
