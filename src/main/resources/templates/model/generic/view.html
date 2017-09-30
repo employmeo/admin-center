@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay} "></title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+				<div class="col-xs-6"><h3 th:text="${modelDisplay}"></h3></div>
+				<div class="col-xs-6">
+					<ul class="nav navbar-right panel_toolbox">
+	                    <li><a th:href="${'/admin/' + model + '/create'}"><i class="fa fa-plus"></i></a></li>
+	                    <li><a th:href="${'/admin/' + model + '/edit/' + item.id}"><i class="fa fa-edit"></i></a></li>
+	                    <li><a th:href="${'/admin/' + model}" ><i class="fa fa-backward"></i></a></li>
+	                </ul>
+				</div>
+                <div class="clearfix"></div>
+			</div>
+			<div th:replace="fragments/view-item :: view-item"></div>
+		</div>
+	</div>
+</body>
+</html>

@@ -21,10 +21,9 @@ public class EvalConfigController {
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "evalconfig";
 	private static final String MODEL_DISPLAY = "Account Survey Evaluation Config";
-	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
-	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
-	private static final String EDIT_VIEW = FRAGMENT_ROOT + MODEL + "/edit";
-	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
+	private static final String LIST_VIEW = FRAGMENT_ROOT + "generic/list";
+	private static final String EDIT_VIEW = FRAGMENT_ROOT + "generic/edit";
+	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + "generic/view";
 	private static final Class MODEL_CLASS= GraderConfig.class;
 
     @RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
