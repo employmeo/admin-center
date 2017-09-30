@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/admin/positionconfig")
+@RequestMapping("/admin/posconfig")
 public class PositionConfigController {
 
 	@Autowired
@@ -33,7 +33,7 @@ public class PositionConfigController {
 	
 
 	private static final String FRAGMENT_ROOT = "model/";
-	private static final String MODEL = "positionconfig";
+	private static final String MODEL = "posconfig";
 	private static final String MODEL_DISPLAY = "Position Prediction Configuration";
 	private static final String LIST_VIEW = FRAGMENT_ROOT + MODEL + "/list";
 	//private static final String CREATE_VIEW = FRAGMENT_ROOT + MODEL + "/create";
