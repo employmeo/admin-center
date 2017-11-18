@@ -153,7 +153,7 @@ public class BenchmarkController {
 	       	for (RespondantNVP nvp : nvps) {
 	       		freeText.append(nvp.getValue());
 	       	}
-	        Set<Response> responses = respondant.getResponses();
+	        Set<Response> responses = respondantService.getResponsesById(respondant.getId());
 	       	for (Response resp : responses) {
 	       		if (null != resp.getResponseText()) freeText.append(resp.getResponseText());
 	       	}
