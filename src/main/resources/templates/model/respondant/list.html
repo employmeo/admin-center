@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/index-layout">
+<head lang="en">
+<title th:text="${modelDisplay + ' List'} ">Listings</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="x_panel">
+			<div class="x_title">
+			  <div class="col-xs-6"><h3 th:text="${modelDisplay + ' List'}">List</h3></div>	 
+			  <div class="clearfix"></div>
+			</div>
+			<div th:replace="fragments/list-item :: list-item"></div>
+			<div class="x_content text-center">
+			  <form class="form form-horizontal" action="#">
+				  <input name="respondantIds" id="respondantIds" type="hidden"/>
+				  <button type="button" class="btn btn-default" onClick="javascript:resetRespondants();">Reset <span id='selectedrcount'>0</span> Selected Respondant(s)</button>
+			  </form>
+			</div>
+		</div>
+		<script>
+			var qTable;
+			$(document).ready(function() {
+			    qTable = $('#listtable').DataTable();
+				qTable.$('tr').click(function (){
+					$(this).toggleClass('selected');
+					$('#selectedrcount').text(qTable.$('tr.selected').length);
+				});
+			});
+			
+			function resetRespondants() {
+				var respondantIds = [];
+				qTable.$('tr.selected').each(function () {
+					var text = $('#listtable').dataTable().fnGetData(this)[1];
+					var cell = $.parseHTML(text); 
+					respondantIds.push($(cell).html());
+				});
+				if (respondantIds.length >= 1) $.ajax({
+					type: "POST",
+					async: true,
+					url: "/admin/respondant/reset",
+				    headers: { 
+				        'Content-Type': 'application/json' 
+				    },
+					data: JSON.stringify(respondantIds),
+					success: function(data) {
+						$('#wait').addClass('hidden');
+						var count = qTable.$('tr.selected').length;
+						window.alert('Successfully reset ' + count + ' respondants');
+						qTable.$('tr.selected').each(function () {$(this).remove();});
+					},
+					error: function(a,b,data) {
+						$('#wait').addClass('hidden');
+						window.alert('error', data);
+					}
+				});
+				return true;
+			}
+			
+			
+		</script>
+	</div>
+</body>
+</html>
