@@ -1,6 +1,9 @@
 package com.talytica.admin.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ import com.employmeo.data.service.AccountService;
 import com.employmeo.data.service.CorefactorService;
 import com.employmeo.data.service.RespondantService;
 import com.google.common.collect.Lists;
+import com.talytica.common.service.AnalyticsExtractionService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +47,9 @@ public class BenchmarkController {
 	
 	@Autowired
 	RespondantService respondantService;
+	
+	@Autowired
+	AnalyticsExtractionService analyticsExtractionService;
 
 	@Autowired
 	PredictionTargetRepository predictionTargetRepository;
@@ -102,87 +109,21 @@ public class BenchmarkController {
         return DISPLAY_VIEW;
     }
     
+    
     @RequestMapping(value = "export/{id}", method = RequestMethod.POST)
-    public void export(@PathVariable Long id, @FormParam("targetId") Long targetId, Model model, HttpServletResponse response) throws IOException{
-    	
+    public void export(@PathVariable Long id, @FormParam("targetId") Long targetId, Model model, HttpServletResponse response) throws Exception{
         String csvFileName = EXPORT_FILENAME;
         response.setContentType("text/csv");
         String headerKey = "Content-Disposition";
-        Benchmark benchmark = accountService.getBenchmarkById(id);
-        String headerValue = String.format("attachment; filename=\"%s\"",
-                csvFileName);
+        String headerValue = String.format("attachment; filename=\"%s\"", csvFileName);
         response.setHeader(headerKey, headerValue);
-        PrintWriter fileWriter = response.getWriter();
-        List<Respondant> respondants = Lists.newArrayList(respondantService.getCompletedForBenchmarkId(id));
-        log.debug("Found {} respondants", respondants.size());
-        String header = null;
-        List<Long> headers = new ArrayList<Long>();
-
-        Collections.sort(respondants, (r2,r1) -> Integer.valueOf(r1.getRespondantScores().size()).compareTo(r2.getRespondantScores().size()));
         
-        for (Respondant respondant : respondants) {
-	       	Set<RespondantScore> scores = respondant.getRespondantScores();
-	       	Set<RespondantNVP> nvps = respondantService.getNVPsForRespondant(respondant.getId());
-	       	Set<Outcome> outcomes = respondantService.getOutcomesForRespondant(respondant.getId());
-	       	if (header == null) {
-	       		StringBuffer sbHeader = new StringBuffer();
-	       		sbHeader.append("respondant_id");
-	       		for (RespondantScore score : scores) {
-	       			Corefactor corefactor = corefactorService.findCorefactorById(score.getId().getCorefactorId());
-	       			sbHeader.append(DELIMITER);
-	       			sbHeader.append(corefactor.getName());
-	       			headers.add(corefactor.getId());
-	       		}
-        		sbHeader.append(DELIMITER);
-        		sbHeader.append("FREETEXT"); // added this colmnn to slap on all words from NVP free-text.
-        		sbHeader.append(DELIMITER);
-        		sbHeader.append("OUTCOME");
-        		sbHeader.append(NEWLINE);
-        		header = sbHeader.toString();
-        		log.debug("WRITING: {}",header);
-	           	fileWriter.append(header);        		
-	       	}
-	       	StringBuffer lineItem = new StringBuffer();
-	       	lineItem.append(respondant.getId());
-	       	for (Long cfid : headers) {
-        		lineItem.append(DELIMITER);
-        		lineItem.append(findCorefactorValue(cfid, scores));
-	       	}
-	       	lineItem.append(DELIMITER);
-	       	StringBuffer freeText = new StringBuffer();
-	       	for (RespondantNVP nvp : nvps) {
-	       		freeText.append(nvp.getValue());
-	       	}
-	        Set<Response> responses = respondantService.getResponsesById(respondant.getId());
-	       	for (Response resp : responses) {
-	       		if (null != resp.getResponseText()) freeText.append(resp.getResponseText());
-	       	}
-    		lineItem.append(StringEscapeUtils.escapeCsv(freeText.toString()));
-    		lineItem.append(DELIMITER);
-    		lineItem.append(findOutcomeValue(targetId, outcomes));
-    		lineItem.append(NEWLINE);
-    		log.debug("WRITING: {}",lineItem.toString());
-    		fileWriter.append(lineItem.toString());	
-        }   
+        File tempfile = analyticsExtractionService.extractBenchmarkDataWithOutcome(id, targetId);     
+        InputStream is = new FileInputStream(tempfile);
+        org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+        response.flushBuffer();
     }
       
-    private String findCorefactorValue(Long id, Set<RespondantScore> scores) {
-    	Optional<RespondantScore> value = scores.stream().filter(cfs -> id.equals(cfs.getId().getCorefactorId())).findFirst();
-    	if (value.isPresent()) {
-    		return value.get().getValue().toString();
-    	}
-    	return "";
-    }
-    
-    private String findOutcomeValue(Long id, Set<Outcome> outcomes) {
-    	Optional<Outcome> value = outcomes.stream().filter(outcome -> id.equals(outcome.getPredictionTarget().getPredictionTargetId())).findFirst();
-    	if (value.isPresent()) {
-    		if (value.get().getValue()) return "1";
-    		return "0";
-    	}
-    	return "";
-    }
-    
     @ModelAttribute("fieldnames")
     public Field[] getFieldNames() {  	
         return MODEL_CLASS.getDeclaredFields();
