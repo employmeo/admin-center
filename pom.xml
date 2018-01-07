@@ -12,11 +12,11 @@
 	<artifactId>admin-center</artifactId>
 	<name>admin-center</name>
 	<description>Talytica Admin Center</description>
-	<version>0.0.28</version>
+	<version>0.0.29</version>
 	<packaging>jar</packaging>
 
 	<properties>
-		<persistence-unit.version>0.1.11</persistence-unit.version>
+		<persistence-unit.version>0.1.12</persistence-unit.version>
 		<start-class>com.talytica.admin.AdminApplication</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -26,10 +26,14 @@
 		<metrics.version>3.1.3</metrics.version>
 		<sendgrid.version>3.1.0</sendgrid.version>
 		<stripe.version>5.8.0</stripe.version>
+		<bigml.version>1.4.2</bigml.version>
 		<spring-cloud-version>1.2.0.RELEASE</spring-cloud-version>
 		<fileupload-version>1.3.1</fileupload-version>
 		<commons-lang3.version>3.5</commons-lang3.version>
+		<commons-math-version>3.6.1</commons-math-version>
 		<logentries-version>1.1.37</logentries-version>
+		<bootstrap-version>3.3.4</bootstrap-version>
+		<jquery-version>2.1.4</jquery-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,6 +55,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jersey</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,7 +98,12 @@
 		    <groupId>com.stripe</groupId>
 		    <artifactId>stripe-java</artifactId>
 		    <version>${stripe.version}</version>
-		</dependency>	
+		</dependency>
+		<dependency>
+		    <groupId>org.bigml</groupId>
+		    <artifactId>bigml-binding</artifactId>
+		    <version>${bigml.version}</version>
+		</dependency>
 		<!-- sendgrid email service -->
 		<dependency>
 		    <groupId>com.sendgrid</groupId>
@@ -127,6 +140,11 @@
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>${fileupload-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>${commons-math-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

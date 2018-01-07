@@ -28,4 +28,5 @@ public class AdminApplication extends SpringBootServletInitializer {
 	    resolver.setMaxUploadSizePerFile(15000000); //bytes
 	    return resolver;
 	}
+	
 }
