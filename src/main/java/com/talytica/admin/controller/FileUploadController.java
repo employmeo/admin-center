@@ -3,9 +3,6 @@ package com.talytica.admin.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.employmeo.data.model.SurveySection;
 import com.talytica.common.service.StorageService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin/upload")
 public class FileUploadController {
-	// save uploaded file to this folder
-    private static String UPLOADED_FOLDER = "C://users//sri//workspace//files//";
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "upload";
 	private static final String MODEL_DISPLAY = "Uploads";

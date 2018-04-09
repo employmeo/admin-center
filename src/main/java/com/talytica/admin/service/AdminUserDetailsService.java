@@ -21,7 +21,7 @@ public class AdminUserDetailsService implements UserDetailsService {
 
     @Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		User user = userRepository.findByEmail(email);
+		User user = userRepository.findByEmailIgnoreCase(email);
     	log.debug("User Lookup Attempt for: {}, with result {}", email, user);
     	
 		if ((user != null) && (user.getUserType() == User.TYPE_SUPER)) return new UserPrincipal(user);
