@@ -1,26 +1,19 @@
 package com.talytica.admin.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.PathParam;
-
 import org.bigml.binding.BigMLClient;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,7 +31,6 @@ import com.talytica.admin.objects.AnalyticsRequest;
 import com.talytica.common.service.AnalyticsExtractionService;
 import com.talytica.common.service.StorageService;
 
-import jersey.repackaged.com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -54,7 +54,7 @@ public class RCConfigController {
     public String edit(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", rcconfigRepository.findOne(id));
+        model.addAttribute("item", rcconfigRepository.findById(id).get());
         return EDIT_VIEW;
     }
     
@@ -62,7 +62,7 @@ public class RCConfigController {
     public String delete(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	rcconfigRepository.delete(rcconfigRepository.findOne(id));
+    	rcconfigRepository.delete(rcconfigRepository.findById(id).get());
     	model.addAttribute("items", rcconfigRepository.findAll());
         return LIST_VIEW;
     }
@@ -71,7 +71,7 @@ public class RCConfigController {
     public String view(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", rcconfigRepository.findOne(id));
+        model.addAttribute("item", rcconfigRepository.findById(id).get());
         return DISPLAY_VIEW;
     }
      

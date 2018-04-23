@@ -58,7 +58,7 @@ public class CriterionController {
     public String edit(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", criterionRepository.findOne(id));
+        model.addAttribute("item", criterionRepository.findById(id).get());
         return EDIT_VIEW;
     }
     
@@ -66,7 +66,7 @@ public class CriterionController {
     public String delete(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	criterionRepository.delete(criterionRepository.findOne(id));
+    	criterionRepository.delete(criterionRepository.findById(id).get());
     	model.addAttribute("items", criterionRepository.findAll());
         return LIST_VIEW;
     }
@@ -75,7 +75,7 @@ public class CriterionController {
     public String view(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", criterionRepository.findOne(id));
+        model.addAttribute("item", criterionRepository.findById(id).get());
         return DISPLAY_VIEW;
     }
      

@@ -61,6 +61,7 @@
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.wav')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.mp3')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.aifc')}" th:src="${item.questionMedia}" controls="controls"></audio>
+							    <audio th:if="${#strings.containsIgnoreCase(item.questionMedia,'.m4a')}" th:src="${item.questionMedia}" controls="controls"></audio>
 							    <video th:if="${#strings.containsIgnoreCase(item.questionMedia,'.webm')}" th:src="${item.questionMedia}" controls="controls"></video>
 							    <video th:if="${#strings.containsIgnoreCase(item.questionMedia,'.mp4')}" th:src="${item.questionMedia}" controls="controls"></video>
 							  </th:block>
