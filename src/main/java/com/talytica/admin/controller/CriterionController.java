@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.employmeo.data.model.Account;
 import com.employmeo.data.model.Criterion;
 import com.employmeo.data.model.PredictionModel;
-import com.employmeo.data.repository.CriterionRepository;
+import com.employmeo.data.service.CriterionService;
 import com.employmeo.data.service.PredictionModelService;
 
 
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CriterionController {
 
 	@Autowired
-	CriterionRepository criterionRepository;
+	CriterionService criterionService;
 
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "criterion";
@@ -36,7 +36,7 @@ public class CriterionController {
     public String  list(Model model) {
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	model.addAttribute("items", criterionRepository.findAll());
+    	model.addAttribute("items", criterionService.getAll());
     	return LIST_VIEW;
     }
    
@@ -50,7 +50,7 @@ public class CriterionController {
     
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(Criterion criterion, Model model) {
-    	Criterion saved = criterionRepository.save(criterion);
+    	Criterion saved = criterionService.save(criterion);
         return "redirect:/admin/" + MODEL + "/" + saved.getId();
     }
 
@@ -58,7 +58,7 @@ public class CriterionController {
     public String edit(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", criterionRepository.findById(id).get());
+        model.addAttribute("item", criterionService.getCriterion(id));
         return EDIT_VIEW;
     }
     
@@ -66,8 +66,8 @@ public class CriterionController {
     public String delete(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	criterionRepository.delete(criterionRepository.findById(id).get());
-    	model.addAttribute("items", criterionRepository.findAll());
+    	criterionService.deleteCriterion(id);
+    	model.addAttribute("items", criterionService.getAll());
         return LIST_VIEW;
     }
     
@@ -75,7 +75,7 @@ public class CriterionController {
     public String view(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", criterionRepository.findById(id).get());
+        model.addAttribute("item", criterionService.getCriterion(id));
         return DISPLAY_VIEW;
     }
      
