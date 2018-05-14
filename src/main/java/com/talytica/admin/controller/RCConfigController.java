@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.employmeo.data.model.ReferenceCheckConfig;
-import com.employmeo.data.repository.ReferenceCheckConfigRepository;
+import com.employmeo.data.service.RCConfigService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RCConfigController {
 
 	@Autowired
-	ReferenceCheckConfigRepository rcconfigRepository;
+	RCConfigService rcconfigService;
 
 	private static final String FRAGMENT_ROOT = "model/";
 	private static final String MODEL = "rcconfig";
@@ -32,7 +32,7 @@ public class RCConfigController {
     public String  list(Model model) {
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	model.addAttribute("items", rcconfigRepository.findAll());
+    	model.addAttribute("items", rcconfigService.getAll());
     	return LIST_VIEW;
     }
    
@@ -46,7 +46,7 @@ public class RCConfigController {
     
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(ReferenceCheckConfig rcconfig, Model model) {
-    	ReferenceCheckConfig saved = rcconfigRepository.save(rcconfig);
+    	ReferenceCheckConfig saved = rcconfigService.save(rcconfig);
         return "redirect:/admin/" + MODEL + "/" + saved.getId();
     }
 
@@ -54,7 +54,7 @@ public class RCConfigController {
     public String edit(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", rcconfigRepository.findOne(id));
+        model.addAttribute("item", rcconfigService.getRCConfig(id));
         return EDIT_VIEW;
     }
     
@@ -62,8 +62,8 @@ public class RCConfigController {
     public String delete(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-    	rcconfigRepository.delete(rcconfigRepository.findOne(id));
-    	model.addAttribute("items", rcconfigRepository.findAll());
+    	rcconfigService.deleteRCConfig(id);
+    	model.addAttribute("items", rcconfigService.getAll());
         return LIST_VIEW;
     }
     
@@ -71,7 +71,7 @@ public class RCConfigController {
     public String view(@PathVariable Long id, Model model){
     	model.addAttribute("model", MODEL);
     	model.addAttribute("modelDisplay", MODEL_DISPLAY);
-        model.addAttribute("item", rcconfigRepository.findOne(id));
+        model.addAttribute("item", rcconfigService.getRCConfig(id));
         return DISPLAY_VIEW;
     }
      

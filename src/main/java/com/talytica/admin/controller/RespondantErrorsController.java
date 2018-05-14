@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.employmeo.data.model.Respondant;
 import com.employmeo.data.service.RespondantService;
 
-import jersey.repackaged.com.google.common.collect.Lists;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

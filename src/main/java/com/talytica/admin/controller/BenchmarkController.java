@@ -2,15 +2,8 @@ package com.talytica.admin.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
@@ -19,20 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.employmeo.data.model.Benchmark;
-import com.employmeo.data.model.Corefactor;
-import com.employmeo.data.model.Criterion;
-import com.employmeo.data.model.Outcome;
-import com.employmeo.data.model.Respondant;
-import com.employmeo.data.model.RespondantNVP;
-import com.employmeo.data.model.RespondantScore;
-import com.employmeo.data.model.Response;
 import com.employmeo.data.repository.PredictionTargetRepository;
 import com.employmeo.data.service.AccountService;
 import com.employmeo.data.service.CorefactorService;
 import com.employmeo.data.service.RespondantService;
-import com.google.common.collect.Lists;
+
 import com.talytica.common.service.AnalyticsExtractionService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +52,6 @@ public class BenchmarkController {
 	private static final String DISPLAY_VIEW = FRAGMENT_ROOT + MODEL + "/view";
 	private static final Class MODEL_CLASS= Benchmark.class;
 
-	private static final String DELIMITER = ",";
-	private static final String NEWLINE = "\n";
 	private static final String EXPORT_FILENAME = "export.csv";
 
     @RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
