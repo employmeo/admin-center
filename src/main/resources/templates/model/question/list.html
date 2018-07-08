@@ -100,7 +100,9 @@
 			    	columnDefs : [{
 			    		visible: false,
 			    		targets : [0,13,14]
-			    	}]
+			    	}],
+			    	dom : 'frtipB',
+			    	buttons : ['csv']
 			    });
 				qTable.$('tr').click(function (){
 					$(this).toggleClass('selected');
