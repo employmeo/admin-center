@@ -19,7 +19,10 @@
 		<script>
 			var qTable;
 			$(document).ready(function() {
-			    qTable = $('#listtable').DataTable();
+			    qTable = $('#listtable').DataTable({
+			    	dom: 'frtipB',
+        			buttons: ['csv']
+			    });
 			});
 		</script>
 	</div>
