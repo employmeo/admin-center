@@ -1,21 +1,18 @@
 package com.talytica.admin.controller;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.employmeo.data.model.Account;
-import com.employmeo.data.model.Criterion;
 import com.employmeo.data.model.CustomWorkflow;
-import com.employmeo.data.model.PredictionModel;
-import com.employmeo.data.model.User;
-import com.employmeo.data.repository.CriterionRepository;
 import com.employmeo.data.service.AccountService;
-import com.employmeo.data.service.PredictionModelService;
-import com.employmeo.data.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -83,7 +80,9 @@ public class CustomWorkflowController {
     }
      
     @ModelAttribute("fieldnames")
-    public Field[] getFieldNames() {  	
-        return MODEL_CLASS.getDeclaredFields();
+    public List<Field> getFieldNames() {
+    	List<Field> fields = Arrays.asList(MODEL_CLASS.getDeclaredFields()).stream()
+    			.filter(f -> !Modifier.isStatic(f.getModifiers())).collect(Collectors.toList());
+    	return fields;
     }
 }
