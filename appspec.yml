@@ -1,5 +1,20 @@
 version: 0.0
 os: linux
 files:
-  - source: ./admin.jar
-    destination: /tmp
+  - source: /target/::JAR_FILE::
+    destination: /opt/talytica/application/builds/
+hooks:
+  ApplicationStop:
+#    - location: deploy/copy_artifact.sh
+#      timeout: 300
+#      runas: root
+  AfterInstall:
+    - location: deploy/stop.sh
+      timeout: 300
+      runas: root
+#    - location: deploy/deploy-latest.sh
+#      timeout: 300
+#      runas: root
+    - location: deploy/start.sh
+      timeout: 300
+      runas: root
