@@ -2,14 +2,14 @@ version: 0.0
 os: linux
 files:
   - source: /target/::JAR_FILE::
-    destination: drops/
+    destination: /home/ec2-user/drops/
 hooks:
   ApplicationStop:
     - location: deploy/stop.sh
       timeout: 300
       runas: root
   AfterInstall:
-    - location: deploy/install.sh
+    - location: deploy/deploy-latest.sh
       timeout: 300
       runas: root
     - location: deploy/start.sh
