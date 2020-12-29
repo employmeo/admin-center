@@ -5,13 +5,13 @@ files:
     destination: drops/
 hooks:
   ApplicationStop:
-    - location: deploy/stop.sh
+    - location: /opt/talytica/application/deploy/stop.sh
       timeout: 300
       runas: root
   AfterInstall:
-    - location: deploy/install.sh
+    - location: /opt/talytica/application/deploy/install.sh
       timeout: 300
       runas: root
-    - location: deploy/start.sh
+    - location: /opt/talytica/application/deploy/start.sh
       timeout: 300
       runas: root
