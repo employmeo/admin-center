@@ -15,8 +15,8 @@ phases:
       - mkdir -p ~/.m2/repository/com/forwardline/persistence/${persistence_version}
       - mv *.pom *.jar ~/.m2/repository/com/forwardline/persistence/${persistence_version}
       - mkdir -p profile/${ENVIRONMENT}
-      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profiles/${ENVIRONMENT}/application.properties profile/${ENVIRONMENT}/application.properties
-      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profiles/${ENVIRONMENT}/logback.xml profile/${ENVIRONMENT}/logback.xml
+      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/application.properties profile/${ENVIRONMENT}/application.properties
+      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/logback.xml profile/${ENVIRONMENT}/logback.xml
       - mvn install -P ${ENVIRONMENT} | tee mvn-output.txt
       - app_name=$(awk '{ if ($2 == "Building") print $3 }' mvn-output.txt | grep -v jar)
       - version=$(awk '{ if ($2 == "Building") print $5 }' mvn-output.txt | grep -v jar)
