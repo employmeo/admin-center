@@ -26,4 +26,4 @@ artifacts:
   files:
     - target/${artifact}
     - appspec.yml
-    - drops/*
+    - deploy/*
