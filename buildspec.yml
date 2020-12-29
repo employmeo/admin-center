@@ -9,7 +9,7 @@ phases:
       - apt-get install -y awscli
   build:
     commands:
-      - persistence_version=$(awk -F'>' '{if ($0 ~ "<persistence.version>") print $2 }' pom.xml | awk -F'<' '{print $1}')
+      - persistence_version=$(awk -F'>' '{if ($0 ~ "<persistence-unit.version>") print $2 }' pom.xml | awk -F'<' '{print $1}')
       - aws s3 cp s3://${CODE_PIPELINE_STORE}/artifacts/persistence-${persistence_version}.jar persistence-${persistence_version}.jar
       - aws s3 cp s3://${CODE_PIPELINE_STORE}/persistence-${persistence_version}.pom persistence-${persistence_version}.pom
       - mkdir -p ~/.m2/repository/com/forwardline/persistence/${persistence_version}
