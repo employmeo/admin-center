@@ -21,7 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<guava.version>21.0</guava.version>
+		<guava.version>[24.1.1,)</guava.version>
 		<swagger.version>1.5.12</swagger.version>
 		<metrics.version>3.1.3</metrics.version>
 		<stripe.version>5.8.0</stripe.version>
