@@ -4,11 +4,10 @@ files:
   - source: /target/::JAR_FILE::
     destination: /home/ec2-user/drops/
 hooks:
-  BeforeInstall:
+  AfterInstall:
     - location: deploy/stop.sh
       timeout: 300
       runas: root
-  AfterInstall:
     - location: deploy/deploy-latest.sh
       timeout: 300
       runas: root
