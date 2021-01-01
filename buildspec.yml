@@ -22,6 +22,9 @@ phases:
       - version=$(awk '{ if ($2 == "Building") print $4 }' mvn-output.txt | grep -v jar)
       - artifact="${app_name}-${version}-${ENVIRONMENT}.jar"
       - sed -i "s/::JAR_FILE::/${artifact}/g" appspec.yml
+      - ls -al target
+      - ls -al
+      - ls -al deploy
 artifacts:
   files:
     - target/${artifact}
