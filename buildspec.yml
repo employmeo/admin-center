@@ -23,7 +23,7 @@ phases:
       - artifact="${app_name}-${version}-${ENVIRONMENT}.jar"
       - sed -i "s/::JAR_FILE::/${artifact}/g" appspec.yml
       - ls -al target
-      - ls -al
+      - more appspec.yml
       - ls -al deploy
 artifacts:
   files:
