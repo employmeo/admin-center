@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /target/::JAR_FILE::
-    destination: /opt/talytica/application/builds
+    destination: /opt/talytica/application/install
 hooks:
   AfterInstall:
     - location: deploy/stop.sh
