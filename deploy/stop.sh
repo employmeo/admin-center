@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 upload_dir=/opt/talytica/application/install
+build_dir=/opt/talytica/application/builds
 upload_jar=$(ls -rt1 ${upload_dir}/*.jar | tail -n1)
 RUNNING_PROCESS=$(ps -ef | grep 'sudo nohup java -jar ' | grep -v grep | awk '{print $2}')
 
