@@ -16,6 +16,6 @@ hooks:
       timeout: 300
       runas: root
   ValidateService:
-    - location deploy/validate.sh
+    - location: deploy/validate.sh
       timeout: 300
       runas: root
