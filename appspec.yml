@@ -11,6 +11,11 @@ hooks:
     - location: deploy/deploy-latest.sh
       timeout: 300
       runas: root
+  ApplicationStart:
     - location: deploy/start.sh
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location deploy/validate.sh
       timeout: 300
       runas: root

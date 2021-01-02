@@ -15,6 +15,7 @@ phases:
       - mkdir -p ~/.m2/repository/com/talytica/persistence/${persistence_version}
       - mv *.pom *.jar ~/.m2/repository/com/talytica/persistence/${persistence_version}
       - mkdir -p profile/${ENVIRONMENT}
+      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/database.properties profile/${ENVIRONMENT}/database.properties
       - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/application.properties profile/${ENVIRONMENT}/application.properties
       - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/logback.xml profile/${ENVIRONMENT}/logback.xml
       - mvn clean package -P ${ENVIRONMENT} | tee mvn-output.txt
