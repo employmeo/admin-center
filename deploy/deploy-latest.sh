@@ -8,4 +8,4 @@ application_name=$(echo $release_build | awk -F'-' '{print $1}')
 
 echo deploying $release_build for $application_name 
 rm -f ${deploy_dir}/*.jar
-ln -s ${release_build} ${deploy_dir}/${application_name}.jar
+ln -s ${release_build} ${deploy_dir}
