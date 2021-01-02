@@ -6,8 +6,8 @@ RUNNING_PROCESS=$(ps -ef | grep 'sudo nohup java -jar ' | grep -v grep | awk '{p
 if [ "${upload_jar}" = null ]; then
     echo "no files in upload dir"
 else
-    echo "Copying ${upload_dir}/${upload_jar} to builds"
-    sudo cp ${upload_dir}/${upload_jar} ${build_dir}/	
+    echo "Copying ${upload_jar} to builds"
+    sudo cp ${upload_jar} ${build_dir}/	
     sudo rm ${upload_dir}/*.jar
 fi
 
