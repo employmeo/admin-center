@@ -15,9 +15,9 @@ phases:
       - mkdir -p ~/.m2/repository/com/talytica/persistence/${persistence_version}
       - mv *.pom *.jar ~/.m2/repository/com/talytica/persistence/${persistence_version}
       - mkdir -p profile/${ENVIRONMENT}
-      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/database.properties profile/${ENVIRONMENT}/database.properties
-      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/application.properties profile/${ENVIRONMENT}/application.properties
-      - aws s3 cp s3://${CODE_PIPELINE_STORE}/admin/profile/${ENVIRONMENT}/logback.xml profile/${ENVIRONMENT}/logback.xml
+      - aws s3 cp s3://${CODE_PIPELINE_STORE}/${APP_NAME}/profile/${ENVIRONMENT}/database.properties profile/${ENVIRONMENT}/database.properties
+      - aws s3 cp s3://${CODE_PIPELINE_STORE}/${APP_NAME}/profile/${ENVIRONMENT}/application.properties profile/${ENVIRONMENT}/application.properties
+      - aws s3 cp s3://${CODE_PIPELINE_STORE}/${APP_NAME}/profile/${ENVIRONMENT}/logback.xml profile/${ENVIRONMENT}/logback.xml
       - mvn clean package -P ${ENVIRONMENT} | tee mvn-output.txt
       - app_name=$(awk '{ if ($2 == "Building") print $3 }' mvn-output.txt | grep -v jar)
       - version=$(awk '{ if ($2 == "Building") print $4 }' mvn-output.txt | grep -v jar)
