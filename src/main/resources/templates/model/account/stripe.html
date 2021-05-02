@@ -85,7 +85,7 @@
 								<tbody>
 									<tr th:each="invoice : ${invoices}">
 										<td><a target="blank"
-											th:text="${#dates.format(new java.util.Date(1000*invoice.date),'MMM dd, YYYY')}"
+											th:text="${#dates.format(new java.util.Date(1000*invoice.dueDate),'MMM dd, YYYY')}"
 											th:href="${dashlink + 'invoices/' + invoice.id}"></a></td>
 										<td
 											th:text="${#dates.format(new java.util.Date(1000*invoice.periodStart),'MMM dd')} + ' to ' + ${#dates.format(new java.util.Date(1000*invoice.periodEnd),'MMM dd')}">Amount</td>
