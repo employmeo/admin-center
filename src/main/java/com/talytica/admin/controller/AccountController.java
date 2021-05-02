@@ -113,11 +113,6 @@ public class AccountController {
 	    	model.addAttribute("customer", customer);
         	model.addAttribute("dashlink", billingService.getDashboardPrefix(customer));
     		Subscription subscription = billingService.checkSubscription(account.getStripeId());
-    		for (Subscription sub : customer.getSubscriptions().getData()) {
-    			if (billingService.getActiveSubscriptionStatuses().contains(sub.getStatus())) {
-    				subscription = sub;
-    			}
-    		}
         	if (subscription != null) {
         		model.addAttribute("subscription", subscription);
 	        	model.addAttribute("upcomingInvoice",billingService.getCustomerNextInvoice(account.getStripeId()));
