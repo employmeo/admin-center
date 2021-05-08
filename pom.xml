@@ -12,7 +12,7 @@
 	<artifactId>admin-center</artifactId>
 	<name>admin-center</name>
 	<description>Talytica Admin Center</description>
-	<version>0.0.42-SNAPSHOT</version>
+	<version>0.0.42</version>
 	<packaging>jar</packaging>
 
 	<properties>
