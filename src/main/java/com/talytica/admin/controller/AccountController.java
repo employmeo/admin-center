@@ -26,6 +26,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Card;
 import com.stripe.model.Customer;
 import com.stripe.model.Invoice;
+import com.stripe.model.PaymentSource;
 import com.stripe.model.Plan;
 import com.stripe.model.Source;
 import com.stripe.model.Subscription;

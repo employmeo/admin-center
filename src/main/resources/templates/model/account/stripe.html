@@ -85,16 +85,16 @@
 								<tbody>
 									<tr th:each="invoice : ${invoices}">
 										<td><a target="blank"
-											th:text="${#dates.format(new java.util.Date(1000*invoice.dueDate),'MMM dd, YYYY')}"
+											th:text="${#dates.format(new java.util.Date(1000*invoice.created),'MMM dd, YYYY')}"
 											th:href="${dashlink + 'invoices/' + invoice.id}"></a></td>
 										<td
 											th:text="${#dates.format(new java.util.Date(1000*invoice.periodStart),'MMM dd')} + ' to ' + ${#dates.format(new java.util.Date(1000*invoice.periodEnd),'MMM dd')}">Amount</td>
 										<td th:text="'$ ' + ${invoice.total/100}">Total</td>
-										<td th:if="${invoice.closed}">
+										<td th:if="${invoice.paid}">
 										  <span class='pull-left'>Paid. Receipt#: </span>
 										  <span class='pull-right' th:text="${invoice.receiptNumber}"></span>
 										</td>
-										<td	th:unless="${invoice.closed}">
+										<td	th:unless="${invoice.paid}">
 										  <span class='pull-left'>Due: </span>
 										  <span class='pull-right' th:text=" ${invoice.amountDue/100}"></span>
 										</td>
@@ -114,10 +114,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<div class="hidden">
-								<pre th:if="${upcomingInvoice}" th:text="${upcomingInvoice}"></pre>
-								<pre th:each="invoice : ${invoices}" th:text="${invoice}"></pre>
-							</div>
 						</div>
 					</div>
 			</div>
@@ -128,7 +124,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content text-center"
-						th:if="${customer.sources.totalCount == 0}">
+						th:if="${#lists.size(customer.sources.data) == 0}">
 						<h2 class="text-danger">Account Has No Credit Card on File</h2>
 						<form th:action="${'/admin/account/' + item.id + '/addcard'}"
 							method="POST">
@@ -145,7 +141,7 @@
 						</form>
 					</div>
 					<div class="x_content"
-						th:unless="${customer.sources.totalCount == 0}">
+						th:unless="${#lists.size(customer.sources.data) == 0}">
 						<table id='cardslist' class="table table-striped table-condensed">
 							<thead>
 								<tr>
@@ -174,24 +170,23 @@
 						<table id='planlist' class="table table-striped table-condensed">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Amount</th>
+									<th>Plan</th>
+									<th>Units</th>
+									<th>Pricing</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="item : ${subscription.subscriptionItems.data}">
+								<tr th:each="item : ${subscription.items.data}">
 									<td><a target="blank" th:text="${item.plan.id}"
-										th:href="${dashlink + 'plans/' + item.plan.id}"></a></td>
-									<td th:text="${item.plan.name} + ' ('+ ${item.quantity} + 'x)'">Desc</td>
+										th:href="${dashlink + 'plans/' + item.plan.product}"></a></td>
+									<td th:text="${item.quantity}">Units</td>
 									<td th:text="'$' + ${item.quantity * item.plan.amount / 100}" class='text-right'>Qty</td>
-								</tr>
+								</tr>								
 							</tbody>
 						</table>
 					</div>
 					<div class="x_content text-center" th:if="${subscription == null}">
-						<h2 class="text-danger text-center">Account has no associated
-							Plan</h2>
+						<h2 class="text-danger text-center">Account has no associated Plan</h2>
 						<span class="text-primary">Please choose a plan to create a
 							subscription</span>
 						<form th:action="${'/admin/account/' + item.id + '/subscribe'}"
@@ -202,7 +197,6 @@
 									<tr>
 										<th>Select</th>
 										<th>Plan</th>
-										<th>Name</th>
 										<th>Amount</th>
 									</tr>
 								</thead>
@@ -212,7 +206,6 @@
 											th:value="${plan.id}" required="true"></input></td>
 										<td><a target="blank" th:text="${plan.id}"
 											th:href="${dashlink + 'plans/' + plan.id}"></a></td>
-										<td th:text="${plan.name}">Desc</td>
 										<td th:text="'$' + ${plan.amount/100}">Amt</td>
 									</tr>
 								</tbody>
