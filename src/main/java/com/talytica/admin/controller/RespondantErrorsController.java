@@ -58,14 +58,15 @@ public class RespondantErrorsController {
     }
     
     @RequestMapping(value = "reset", method = RequestMethod.POST)
-    public Integer reset(@RequestBody List<String> respondantIdStrings, Model model){
+    @ResponseBody
+    public List<String> reset(@RequestBody List<String> respondantIdStrings, Model model){
     	log.debug("Resetting {}", respondantIdStrings);
     	if (!respondantIdStrings.isEmpty()) {
 	    	List<Long> respondantIds = Lists.newArrayList(); 
 	    	for (String id : respondantIdStrings) respondantIds.add(Long.valueOf(id));
 	    	respondantService.clearErrors(respondantIds);
     	}
-        return respondantIdStrings.size();
+        return respondantIdStrings;
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
